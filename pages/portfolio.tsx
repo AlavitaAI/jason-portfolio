@@ -1,19 +1,54 @@
 // pages/portfolio.tsx
-import caseStudies from '../data/caseStudies';
-import Link from 'next/link';
+import Image from "next/image";
+import Link from "next/link";
+import caseStudies from "@/data/caseStudies";
 
 export default function Portfolio() {
   return (
-    <div className="min-h-screen bg-gray-900 text-white px-6 py-10">
-      <h1 className="text-3xl font-bold mb-6 text-lime-400">Investment Portfolio</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <section className="container-xl py-12">
+      <h1 className="text-3xl font-bold mb-2">Portfolio / Deal Room</h1>
+      <p className="text-gray-600 mb-8">
+        Weekly case studies analyzing public companies like PE targets. Each
+        includes a memo, valuation work, LBO, and value creation plan.
+      </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {caseStudies.map((deal) => (
-          <Link key={deal.slug} href={`/portfolio/${deal.slug}`} className="bg-gray-800 rounded-lg p-5 hover:bg-gray-700 transition">
-            <h2 className="text-2xl font-semibold">{deal.company}</h2>
-            <p className="text-gray-300 text-sm mt-2">{deal.summary}</p>
-          </Link>
+          <div key={deal.slug} className="card p-6">
+            <div className="flex items-center gap-3 mb-4">
+              {deal.logo && (
+                <div className="relative w-10 h-10">
+                  <Image src={deal.logo} alt={deal.company} fill className="object-contain" />
+                </div>
+              )}
+              <h2 className="text-xl font-semibold">{deal.company}</h2>
+            </div>
+
+            <p className="text-gray-700 mb-5">{deal.summary}</p>
+
+            <div className="flex flex-wrap gap-3">
+              <Link href={`/portfolio/${deal.slug}`} className="btn btn-primary">
+                Full Analysis
+              </Link>
+              {deal.memo && (
+                <a className="btn btn-ghost" href={deal.memo} target="_blank" rel="noreferrer">
+                  Investment Memo
+                </a>
+              )}
+              {deal.dcf && (
+                <a className="btn btn-ghost" href={deal.dcf} target="_blank" rel="noreferrer">
+                  DCF / Comps
+                </a>
+              )}
+              {deal.lbo && (
+                <a className="btn btn-ghost" href={deal.lbo} target="_blank" rel="noreferrer">
+                  LBO Model
+                </a>
+              )}
+            </div>
+          </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 }
