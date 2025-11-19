@@ -1,36 +1,58 @@
 // pages/index.tsx
 import Link from 'next/link';
+import Image from 'next/image';
+
 
 export default function Home() {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 to-black text-white font-sans">
-      <header className="flex justify-between items-center px-8 py-6 border-b border-gray-800">
-        <h1 className="text-2xl font-bold text-lime-400">Jason Conroy</h1>
-        <nav className="space-x-6">
-          <Link href="/" className="hover:text-lime-300 transition">Home</Link>
-          <Link href="/portfolio" className="hover:text-lime-300 transition">Portfolio</Link>
-          <Link href="/blog" className="hover:text-lime-300 transition">Blog</Link>
-        </nav>
-      </header>
+return (
+<div className="min-h-screen bg-gradient-to-br from-white to-gray-100 text-gray-900 font-sans">
+<header className="w-full border-b border-gray-200 bg-white shadow-sm">
+<div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+<h1 className="text-xl font-bold">Jason Conroy</h1>
+<nav className="space-x-6 text-sm font-medium text-gray-600">
+<Link href="/" className="hover:text-black">Home</Link>
+<Link href="/about" className="hover:text-black">About</Link>
+<Link href="/portfolio" className="hover:text-black">Portfolio</Link>
+<Link href="/blog" className="hover:text-black">Blog</Link>
+</nav>
+</div>
+</header>
 
-      <main className="flex flex-col items-center justify-center text-center px-6 py-28">
-        <h2 className="text-5xl md:text-6xl font-extrabold text-lime-400 mb-6 leading-tight">
-          Hi, I’m Jason Conroy
-        </h2>
-        <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mb-6">
-          A Private Equity professional with a finance background. I specialize in valuation, modeling, and deal analysis—and I’m building this site to showcase my work and growth as a future investor.
-        </p>
-        <p className="text-lg md:text-xl text-gray-400 max-w-2xl mb-10">
-          Every week, I publish an investment case study analyzing different public companies as if they were PE targets—modeling LBOs, writing investment memos, and identifying value creation strategies.
-        </p>
-        <Link href="/portfolio" className="bg-lime-400 text-black px-6 py-3 text-lg font-semibold rounded-full hover:bg-lime-300 transition">
-          Explore My Work
-        </Link>
-      </main>
 
-      <footer className="text-center text-sm text-gray-600 py-6 border-t border-gray-800">
-        &copy; {new Date().getFullYear()} Jason Conroy. All rights reserved.
-      </footer>
-    </div>
-  );
+<main className="flex flex-col items-center justify-center text-center px-6 py-28">
+<Image
+src="/profile.jpg"
+alt="Jason Conroy profile"
+width={120}
+height={120}
+className="rounded-full shadow-md mb-6"
+/>
+<h2 className="text-4xl font-extrabold mb-4">Jason Conroy</h2>
+<p className="text-gray-500 text-sm mb-2">Private Equity Professional in Boston</p>
+<p className="text-gray-700 max-w-xl mb-6">
+I specialize in valuation, modeling, and deal analysis. Every week, I publish an investment case study analyzing different public companies like a PE target—LBO modeling, investment memos, and value creation strategies.
+</p>
+<div className="flex space-x-4">
+<a
+href="https://linkedin.com/in/jasonconroy"
+target="_blank"
+className="text-sm text-gray-600 hover:text-black border px-4 py-2 rounded-md"
+>
+LinkedIn
+</a>
+<a
+href="mailto:jason@email.com"
+className="text-sm text-gray-600 hover:text-black border px-4 py-2 rounded-md"
+>
+Contact
+</a>
+</div>
+</main>
+
+
+<footer className="text-center text-sm text-gray-400 py-6 border-t border-gray-200">
+&copy; {new Date().getFullYear()} Jason Conroy. All rights reserved.
+</footer>
+</div>
+);
 }
