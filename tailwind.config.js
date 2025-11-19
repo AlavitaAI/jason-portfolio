@@ -7,12 +7,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {
-        brand: {
-          lime: "#A3E635",
-          ink: "#111827",
-        },
-      },
       boxShadow: {
         soft: "0 10px 30px -15px rgba(0,0,0,0.15)",
       },
