@@ -1,49 +1,59 @@
-// pages/index.tsx
 import Image from "next/image";
-import Link from "next/link";
+import { useState } from "react";
 
 export default function Home() {
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // TODO: Connect to your email service (Buttondown, ConvertKit, etc.)
+    console.log("Email submitted:", email);
+    setSubmitted(true);
+    setEmail("");
+  };
+
   return (
-    <section className="container-xl pt-16 pb-24">
-      {/* Hero Card */}
-      <div className="card py-16 px-6 md:px-12 text-center">
-        <div className="mx-auto w-28 h-28 relative mb-6">
-          <Image
-            src="/profile.jpg" /* place a photo at /public/profile.jpg */
-            alt="Jason Conroy"
-            fill
-            className="rounded-full object-cover shadow"
-          />
-        </div>
+    <section className="container-xl py-16 md:py-24">
+      {/* Name */}
+      <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-center mb-12">
+        Jason Conroy
+      </h1>
 
-        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2">
-          Jason Conroy
-        </h1>
-        <p className="text-gray-500 mb-6">Private Equity professional in Boston</p>
+      {/* Hero Image */}
+      <div className="relative w-full max-w-2xl mx-auto aspect-[16/10] mb-16">
+        <Image
+          src="/hero.jpg"
+          alt="The journey begins"
+          fill
+          className="object-cover rounded-lg"
+          priority
+        />
+      </div>
 
-        <p className="max-w-2xl mx-auto text-gray-700 leading-relaxed mb-6">
-          Hi, I’m Jason Conroy, a Private Equity professional with a finance
-          background. I specialize in valuation, modeling, and deal analysis—and
-          I’m building this site to showcase my work and growth as a future
-          investor.
+      {/* Email Signup */}
+      <div className="max-w-md mx-auto text-center">
+        <p className="text-gray-600 mb-4">
+          Get notified when I post something new.
         </p>
-        <p className="max-w-2xl mx-auto text-gray-700 leading-relaxed">
-          Every week, I publish an investment case study analyzing different
-          public companies as if they were PE targets—modeling LBOs, writing
-          investment memos, and identifying value creation strategies.
-        </p>
-
-        <div className="mt-8 flex items-center justify-center gap-3">
-          <Link href="/portfolio" className="btn btn-primary">
-            Explore Portfolio
-          </Link>
-          <Link href="/about" className="btn btn-ghost">
-            About Me
-          </Link>
-          <Link href="/blog" className="btn btn-ghost">
-            Blog
-          </Link>
-        </div>
+        
+        {submitted ? (
+          <p className="text-green-600 font-medium">Thanks! You're on the list.</p>
+        ) : (
+          <form onSubmit={handleSubmit} className="flex gap-2">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="your@email.com"
+              required
+              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-900 transition"
+            />
+            <button type="submit" className="btn btn-primary px-6">
+              Subscribe
+            </button>
+          </form>
+        )}
       </div>
     </section>
   );
