@@ -3,8 +3,11 @@ export type BookPost = {
   title: string;
   author: string;
   date: string;
+  dateRead: string;
+  rating: number; // 1-5 stars
+  cover: string;
   summary: string;
-  content: string; // HTML or plain text
+  content: string;
 };
 
 const bookPosts: BookPost[] = [
@@ -13,30 +16,31 @@ const bookPosts: BookPost[] = [
     title: "The Personal MBA",
     author: "Josh Kaufman",
     date: "Jan 9, 2026",
+    dateRead: "[Month Year]",
+    rating: 5, // Change this to your rating (1-5)
+    cover: "/covers/personal-mba.jpg",
     summary: "A comprehensive business education in one book.",
     content: `
-      <p>Write your thoughts about The Personal MBA here...</p>
-      
+      <h2>One-Sentence Summary</h2>
+      <p>[What's this book about in one sentence?]</p>
+
       <h2>Key Takeaways</h2>
       <ul>
-        <li>Takeaway 1</li>
-        <li>Takeaway 2</li>
-        <li>Takeaway 3</li>
+        <li>[Takeaway 1]</li>
+        <li>[Takeaway 2]</li>
+        <li>[Takeaway 3]</li>
+        <li>[Takeaway 4]</li>
+        <li>[Takeaway 5]</li>
       </ul>
-      
+
       <h2>Favorite Quotes</h2>
-      <blockquote>
-        "Add your favorite quote here..."
-      </blockquote>
-      
+      <blockquote>"[Quote that stuck with you...]"</blockquote>
+      <blockquote>"[Another great quote...]"</blockquote>
+
       <h2>How I'll Apply This</h2>
-      <p>Write how you plan to apply what you learned...</p>
-      
-      <h2>Rating</h2>
-      <p>⭐⭐⭐⭐⭐ (5/5)</p>
+      <p>[What will you actually do differently after reading this?]</p>
     `,
   },
 ];
 
 export default bookPosts;
-
