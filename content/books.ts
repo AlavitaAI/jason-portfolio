@@ -70,25 +70,33 @@ const bookPosts: BookPost[] = [
     title: "Thinking in Bets",
     author: "Annie Duke",
     date: "Jan 23, 2026",
-    dateRead: "[Month Year]",
-    rating: 5,
+    dateRead: "January 22, 2026",
+    rating: 4,
     cover: "/covers/thinking-in-bets.jpg",
     summary: "Making smarter decisions when you don't have all the facts.",
     content: `
       <h2>Summary</h2>
-      <p>[What's this book about?]</p>
+      <p>In Thinking in Bets, former World Series of Poker champion Annie Duke explores how to navigate a world where we rarely have all the facts. She argues that our lives are a series of bets based on our beliefs, which are often biased and incomplete. The book's central thesis is a rejection of "resulting"—the flawed habit of equating the quality of a decision with its outcome—and "hindsight bias," which makes us feel that a result was inevitable once it has occurred.</p>
+      <p>By treating decisions as poker hands rather than chess moves, Duke provides a toolkit for making better choices under pressure. She teaches readers how to detach their egos from their ideas, embrace the "I'm not sure" mindset, and use "temporal distancing" to view current problems from a long-term perspective. Ultimately, the book is a guide to shifting your focus from the unpredictable results of life to the logic of the decision-making process itself, ensuring that even when you lose a "bet," you still gain the data necessary to win the next one.</p>
 
       <h2>My Favorite Takeaways</h2>
       <ul>
-        <li>[Takeaway 1]</li>
-        <li>[Takeaway 2]</li>
-        <li>[Takeaway 3]</li>
-        <li>[Takeaway 4]</li>
-        <li>[Takeaway 5]</li>
+        <li><strong>Ditch "Resulting":</strong> Stop judging decisions solely by their outcomes. Life is more like poker than chess; it involves luck and hidden information. Making peace with the "grey area" and accepting uncertainty is the first step toward genuine growth.</li>
+        <li><strong>Beliefs as Bets:</strong> Our beliefs aren't objective truths; they are often biased filters. By viewing your certainty as a percentage (e.g., "I'm 60% sure") rather than a binary "right or wrong," you become more open to new information and a better collaborator.</li>
+        <li><strong>Luck vs. Skill:</strong> To grow, you must objectively "field" outcomes. Don't fall for the ego trap of blaming bad luck for failures while taking total credit for successes. Emulate pros like Phil Ivey: admit mistakes, give credit to others, and let your learning compound.</li>
+        <li><strong>Build a Truth-Seeking Circle:</strong> Success is easier when you're surrounded by people who challenge you rather than just agree with you. Use these groups to hold yourself accountable, avoid echo chambers, and practice explaining your reasoning before you act.</li>
+        <li><strong>Radical Transparency:</strong> Combat your brain's natural bias by sharing every detail—especially the ones you want to hide. Don't "shoot the messenger," withhold your opinion until others have spoken, and always acknowledge points of agreement first to lower defensiveness.</li>
+        <li><strong>The Power of Time Travel:</strong> Use the 10-10-10 rule to zoom out and consult your future self. Tools like "backcasting" from success or "pre-mortems" on failure help you evaluate choices rationally before emotions take over. Wean yourself off the "outcome addiction" to find true contentment.</li>
       </ul>
 
       <h2>How I'll Apply This</h2>
-      <p>[What will you actually do differently after reading this?]</p>
+      <p>I do think there is a lot I can take from this book and apply to my life. Sometimes I struggle with regret because I feel "I should have known". In reality, I need to accept that I can make the best bet given all I know at the moment, but good bets can still turnout bad, and bad bets can turnout good. Luck is always at play. Life is not black and white, 0% or 100%, right or wrong.</p>
+      <p>Accepting uncertainty is actually a good thing. I could do a much better job in terms of acknowledging I am not 100% sure sometimes, and be okay with living in the in-between of confident and not confident.</p>
+      <p>Find people who hold you accountable and don't all just agree with each other. That being said, not everyone needs to be committed to a truthseeking experience, and sometimes the situation just requires you to be quiet and let someone vent. It is okay to be quiet, even if you want to interject. Not everyone wants my advice all the time, sometimes they just want to complain about the world, and that is OK. There are times for advice and rationalization, and times for listening.</p>
+      <p>Sometimes I am too quick to say someone else is lucky, when I would have claimed it was skill if I had achieved the same outcome. Instead of thinking lucky vs unlucky, I can instead figure out what they did well, or what I could have done better. This leads to growth.</p>
+      <p>I can start by finding out where I agree with people. Be more open to their ideas, and the idea that I may be wrong, or just unsure! Newsflash: I don't know everything.</p>
+      <p>I can do a much better job zooming out during stressful or emotional times. There is no need to get worked up about something that has no affect on the grand scheme of life. Don't be a ticker watcher!</p>
+      <p>I tend to want to know how everything will go, so I can do more to accept the uncertainty of things, and instead just make my best bet. When I make that bet, I need to accept that luck is a huge factor, and we can never be 100% sure. I may win my bet, which is great, but I will inevitably lose quite a lot. So instead of complaining, learn from it, and use it to make a better bet next time. You will get a second chance.</p>
     `,
   },
 ];
