@@ -39,6 +39,58 @@ const bookPosts: BookPost[] = [
       <p>I think maybe the best part of this book is that there is so much content that is actionable. I will definitely be applying many of the ideas to my life, and I will definitely be using this book as a reference for the future. I think this is a great book for anyone who is looking to start a business, or just wants to improve their business knowledge. I recently started my own startup, and it has been a struggle. While I enjoy it, and it isn't my source of income, there are certain things I have struggled with that Kaufman covers in a very simple way. His ability to explain complex concepts and ideas in an easy to read and understand way is really great. I also think this book has a lot to do with the mental aspect of business and life, so even if you aren't heavily involved in business, it can still provide you with a lot of concepts and values that you can use in your own life. I really enjoyed this book, as it covered so much, but didn't feel overwhelmingly dense. His way of writing makes it light, and the structure of the book allows the read to pick it up and put it down easily without having to study large amounts of information at a time. Really enjoyed it, and would recommend it.</p>
     `,
   },
+  {
+    slug: "grit",
+    title: "Grit",
+    author: "Angela Duckworth",
+    date: "Jan 16, 2026",
+    dateRead: "[Month Year]",
+    rating: 5,
+    cover: "/covers/grit.jpg",
+    summary: "The power of passion and perseverance.",
+    content: `
+      <h2>Summary</h2>
+      <p>[What's this book about?]</p>
+
+      <h2>My Favorite Takeaways</h2>
+      <ul>
+        <li>[Takeaway 1]</li>
+        <li>[Takeaway 2]</li>
+        <li>[Takeaway 3]</li>
+        <li>[Takeaway 4]</li>
+        <li>[Takeaway 5]</li>
+      </ul>
+
+      <h2>How I'll Apply This</h2>
+      <p>[What will you actually do differently after reading this?]</p>
+    `,
+  },
+  {
+    slug: "thinking-in-bets",
+    title: "Thinking in Bets",
+    author: "Annie Duke",
+    date: "Jan 23, 2026",
+    dateRead: "[Month Year]",
+    rating: 5,
+    cover: "/covers/thinking-in-bets.jpg",
+    summary: "Making smarter decisions when you don't have all the facts.",
+    content: `
+      <h2>Summary</h2>
+      <p>[What's this book about?]</p>
+
+      <h2>My Favorite Takeaways</h2>
+      <ul>
+        <li>[Takeaway 1]</li>
+        <li>[Takeaway 2]</li>
+        <li>[Takeaway 3]</li>
+        <li>[Takeaway 4]</li>
+        <li>[Takeaway 5]</li>
+      </ul>
+
+      <h2>How I'll Apply This</h2>
+      <p>[What will you actually do differently after reading this?]</p>
+    `,
+  },
 ];
 
 export default bookPosts;
