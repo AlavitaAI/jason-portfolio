@@ -16,7 +16,7 @@ const bookPosts: BookPost[] = [
     title: "The Personal MBA",
     author: "Josh Kaufman",
     date: "Jan 9, 2026",
-    dateRead: "[Month Year]",
+    dateRead: "January 7, 2026",
     rating: 4, // Change this to your rating (1-5)
     cover: "/covers/personal-mba.jpg",
     summary: "A comprehensive business education in one book.",
