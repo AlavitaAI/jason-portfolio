@@ -44,25 +44,30 @@ const bookPosts: BookPost[] = [
     title: "Grit",
     author: "Angela Duckworth",
     date: "Jan 16, 2026",
-    dateRead: "[Month Year]",
+    dateRead: "January 14, 2026",
     rating: 5,
     cover: "/covers/grit.jpg",
     summary: "The power of passion and perseverance.",
     content: `
       <h2>Summary</h2>
-      <p>[What's this book about?]</p>
+      <p>In Grit, Angela Duckworth argues that the secret to outstanding achievement isn't talent, but a special blend of passion and persistence she calls "grit." We often fall into the trap of being "distracted by talent," assuming that greatness is a divine gift rather than a result of mundane, individual feats performed over and over. Duckworth breaks down the "effort counts twice" formula: Talent x Effort = Skill, and Skill x Effort = Achievement.</p>
+      <p>The book's central message is that our potential is one thing, but what we do with it is quite another. Achievement is what happens when you take your acquired skills and use them repeatedly, especially when things get boring or difficult. Whether it's through "deliberate practice," finding a deeper purpose, or building a "culture of grit," the book serves as a roadmap for anyone who wants to stop quitting too early and start finishing what they begin.</p>
 
       <h2>My Favorite Takeaways</h2>
       <ul>
-        <li>[Takeaway 1]</li>
-        <li>[Takeaway 2]</li>
-        <li>[Takeaway 3]</li>
-        <li>[Takeaway 4]</li>
-        <li>[Takeaway 5]</li>
+        <li><strong>Effort Over Talent:</strong> We often fixate on talent as a way to avoid competing; if someone is a "genius," we aren't obligated to compare ourselves. In reality, greatness is just many doable feats added together. Talent only determines how quickly your skills improve, but effort is what actually produces results.</li>
+        <li><strong>The 25/5 Rule for Passion:</strong> Passion isn't just excitement; it's direction. Write down 25 career goals, circle the top 5, and avoid the other 20 at all costs. Those secondary goals are the ones that distract you from the common purpose that actually matters.</li>
+        <li><strong>Deliberate Practice vs. Flow:</strong> Flow is great when challenge and skill are balanced, but growth happens during "deliberate practice." This is the 3–5 hours a day of working on your weaknesses until they become fluent. It's not always fun, but achieving the results is.</li>
+        <li><strong>Hope as Control:</strong> Hope in grit isn't just wishing things get better; it's the belief that your own efforts can improve your future. It's the "fall 6 times, get up 7" mentality. If you have a fixed mindset, you're guaranteed to stay disappointed.</li>
+        <li><strong>The Hard Thing Rule:</strong> To build grit, you need to commit to one "hard thing" and stick to it. You can't quit on a bad day or when you're confused; you can only quit at a natural stopping point, like the end of a season or a project.</li>
+        <li><strong>Culture Shapes Identity:</strong> It is much easier to be gritty when you are part of a gritty culture. We eventually adopt the habits of the people we surround ourselves with. If you think of yourself as someone who overcomes adversity, your behavior will eventually rise to meet that identity.</li>
       </ul>
 
       <h2>How I'll Apply This</h2>
-      <p>[What will you actually do differently after reading this?]</p>
+      <p>I definitely relate to being "distracted by talent." When I was younger, I thought it was cool to succeed without trying, but weightlifting showed me that it's okay to absolutely suck at the start. I need to bring that same "growth mindset" to everything I am working on now. Right now, sometimes I quit too easily when things are confusing, but I need to accept that I'm not naturally gifted yet and just put in the hours.</p>
+      <p>I'm going to start using the "Hard Thing Rule." I have a habit of getting really interested in something and then quitting when the "honeymoon phase" ends and it gets boring. From now on, I'm going to try harder to follow through until the natural end, no matter how hard it gets.</p>
+      <p>I strive to be "supportive yet demanding" in my relationships. It is good to be demanding of the people you love because you believe in them, but you need to add a more supportive tone sometimes so that they know you are in their corner. I also need to make sure my body language matches my words. If I say I'm positive but my face looks defeated, I'm not being gritty. I fall victim to this quite a bit!</p>
+      <p>Stop envying successful people and start using them as competition fuel. Like Pete Carroll using a Super Bowl loss as fuel, I want to use my own failures and the success of others to shape the best version of myself. Finding a "culture of grit" in your career is important—people who are on the same mission—because it's way easier to stay on the treadmill when everyone else is running too.</p>
     `,
   },
   {
