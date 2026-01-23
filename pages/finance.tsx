@@ -5,7 +5,7 @@ export default function Finance() {
   return (
     <section className="container-xl py-16">
       <h1 className="text-3xl font-bold mb-2">Finance</h1>
-      <p className="text-gray-600 mb-10">One company analysis a week in 2026.</p>
+      <p className="text-gray-600 mb-10">Doing some deep company analysis when I have the time. Not financial advice, just working on my abilities.</p>
 
       {financePosts.length === 0 ? (
         <p className="text-gray-500 italic">First post coming soon...</p>
