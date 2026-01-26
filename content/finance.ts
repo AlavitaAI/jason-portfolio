@@ -22,13 +22,18 @@ const financePosts: FinancePost[] = [
         <p>For the full technical breakdown, you can access the original files below:</p>
         <ul style="list-style: none; padding: 0;">
           <li style="margin-bottom: 10px;">
-            <a href="/downloads/macys-analysis.pdf" target="_blank" style="color: #2563eb; font-weight: bold; text-decoration: underline;">
+            <a href="/macys-analysis.pdf" target="_blank" style="color: #2563eb; font-weight: bold; text-decoration: underline;">
               📄 Read Full 20-Page Investment Thesis (PDF)
             </a>
           </li>
           <li>
-            <a href="/downloads/macys-lbo-model.xlsx" download style="color: #2563eb; font-weight: bold; text-decoration: underline;">
+            <a href="/macys-lbo-model.xlsx" download style="color: #2563eb; font-weight: bold; text-decoration: underline;">
               📈 Download LBO & Valuation Model (Excel)
+            </a>
+          </li>
+          <li>
+            <a href="/macys-financial-summaries.xlsx" download style="color: #2563eb; font-weight: bold; text-decoration: underline;">
+              📈 Download Financial Summaries (Excel)
             </a>
           </li>
         </ul>
