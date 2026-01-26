@@ -59,8 +59,8 @@ const financePosts: FinancePost[] = [
       <hr style="margin: 40px 0; border: 0; border-top: 1px solid #eee;" />
       
       <h3>Full Report Preview</h3>
-      <iframe src="/downloads/macys-analysis.pdf" width="100%" height="800px" style="border: 1px solid #ddd; border-radius: 4px;">
-        <p>It appears your browser doesn't support PDFs. <a href="/downloads/macys-analysis.pdf">Click here to download the PDF</a>.</p>
+      <iframe src="/macys-analysis.pdf" width="100%" height="800px" style="border: 1px solid #ddd; border-radius: 4px;">
+        <p>It appears your browser doesn't support PDFs. <a href="/macys-analysis.pdf">Click here to download the PDF</a>.</p>
       </iframe>
     `,
   },
