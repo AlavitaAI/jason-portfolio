@@ -17,14 +17,17 @@ export default function Home() {
         body: JSON.stringify({ email }),
       });
 
-      if (!res.ok) throw new Error("Subscription failed");
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || "Subscription failed");
+      }
 
       setStatus("success");
       setEmail("");
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
       setStatus("error");
-      setErrorMessage("Something went wrong. Please try again or contact support.");
+      setErrorMessage(e.message || "Something went wrong. Please try again.");
     }
   };
 

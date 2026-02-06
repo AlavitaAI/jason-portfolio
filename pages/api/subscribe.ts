@@ -21,7 +21,7 @@ export default async function handler(
         // Send email to admin (Jason) about the new subscriber
         const { data, error } = await resend.emails.send({
             from: 'Portfolio Notification <onboarding@resend.dev>', // Use default testing domain until custom domain is set
-            to: 'dillan.teagle@gmail.com', // Replace with admin email, using a placeholder for now which user can update
+            to: 'jasonmatthewconroy@gmail.com',
             subject: 'New Newsletter Subscriber!',
             html: `<p>New subscriber: <strong>${email}</strong></p><p>Add them to your audience list!</p>`,
         });
