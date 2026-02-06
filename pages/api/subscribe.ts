@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+
 
 export default async function handler(
     req: NextApiRequest,
@@ -22,6 +22,8 @@ export default async function handler(
         console.error('RESEND_API_KEY is not defined');
         return res.status(500).json({ message: 'Server configuration error: Missing API Key' });
     }
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
     try {
         // Send email to admin (Jason) about the new subscriber
