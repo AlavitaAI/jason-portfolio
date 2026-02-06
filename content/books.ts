@@ -104,6 +104,34 @@ const bookPosts: BookPost[] = [
       <p>I tend to want to know how everything will go, so I can do more to accept the uncertainty of things, and instead just make my best bet. When I make that bet, I need to accept that luck is a huge factor, and we can never be 100% sure. I may win my bet, which is great, but I will inevitably lose quite a lot. So instead of complaining, learn from it, and use it to make a better bet next time. You will get a second chance.</p>
     `,
   },
+  {
+    slug: "the-outsiders",
+    title: "The Outsiders",
+    author: "William N. Thorndike, Jr.",
+    date: "Feb 6, 2026",
+    dateRead: "February 4, 2026",
+    rating: 5,
+    cover: "/covers/the-outsiders.jpg",
+    summary: "Eight Unconventional CEOs and Their Radically Rational Blueprint for Success.",
+    content: `
+      <h2>Summary</h2>
+      <p>The Outsiders details the extraordinary success of eight unconventional CEOs who took a radically rational approach to capital allocation. William Thorndike analyzed these leaders—including names like Warren Buffett (Berkshire Hathaway), Henry Singleton (Teledyne), and Tom Murphy (Capital Cities)—and found that they shared a common set of traits that differed sharply from their peers. They didn't focus on quarterly earnings or empire building; instead, they focused relentlessly on maximizing per-share value over the long term.</p>
+      <p>The core premise is that a CEO has two distinct jobs: running the operations efficiently and deploying the cash those operations generate. While most CEOs focus on the former, the "Outsiders" excelled at the latter. They treated capital allocation as their primary responsibility, often making contrarian moves like aggressive share buybacks when their stock was cheap, or avoiding dividends to reinvest in higher-return opportunities. The result? They outperformed the S&P 500 by a massive margin over decades.</p>
+
+      <h2>My Favorite Takeaways</h2>
+      <ul>
+        <li><strong>Capital Allocation is King:</strong> The most important job of a CEO is capital allocation. It's not just about operations; it's about what you do with the money you make. Over the long term, returns are determined by how effectively cash is deployed.</li>
+        <li><strong>Cash Flow > Reported Earnings:</strong> These CEOs ignored conventional metrics like reported earnings and focused entirely on cash flow. They knew that accounting profits could be manipulated or misleading, but cash was reality.</li>
+        <li><strong> The Power of Buybacks:</strong> When their own stock was trading below intrinsic value, they bought it back aggressiveness. This simple act of shrinking the share count significantly boosted value per share for remaining shareholders—a strategy Henry Singleton pioneered at Teledyne.</li>
+        <li><strong>Decentralization:</strong> Almost all of these companies operated with incredibly lean corporate headquarters. They pushed decision-making power down to the local managers who knew the business best, reducing bureaucracy and fostering an entrepreneurial spirit.</li>
+        <li><strong>Patience and Boldness:</strong> They were willing to sit on cash for long periods when opportunities were scarce, but when a "fat pitch" came along, they bet big. They didn't feel the need to be active just for the sake of activity.</li>
+      </ul>
+
+      <h2>How I'll Apply This</h2>
+      <p>This book completely changed how I view business success. It reinforced the idea that "activity" does not equal "progress." In my own work, I want to focus less on vanity metrics (like revenue growth for its own sake) and more on the underlying value per unit of effort or capital.</p>
+      <p>I also love the concept of the "institutional imperative"—the tendency for executives to mindlessly copy their peers. Applying this to life means having the courage to look like an idiot in the short term to be a genius in the long term. Whether it's investing or career choices, I need to be comfortable being an "outsider" if the math and logic make sense, even when the crowd is going the other way.</p>
+    `,
+  },
 ];
 
 export default bookPosts;
