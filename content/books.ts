@@ -135,3 +135,5 @@ const bookPosts: BookPost[] = [
 ];
 
 export default bookPosts;
+
+// Triggering newsletter automation test
