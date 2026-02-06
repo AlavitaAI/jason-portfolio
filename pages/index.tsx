@@ -24,7 +24,7 @@ export default function Home() {
     } catch (e) {
       console.error(e);
       setStatus("error");
-      setErrorMessage("Something went wrong. Please try again.");
+      setErrorMessage("Something went wrong. Please try again or contact support.");
     }
   };
 
