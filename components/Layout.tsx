@@ -1,3 +1,4 @@
+import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ReactNode } from "react";
@@ -14,6 +15,9 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Head>
+        <title>Jason Conroy</title>
+      </Head>
       {/* Header */}
       <header className="w-full border-b border-gray-200 bg-white/90 backdrop-blur">
         <div className="container-xl h-14 flex items-center justify-between">
