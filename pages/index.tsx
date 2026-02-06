@@ -23,7 +23,7 @@ export default function Home() {
       {/* Hero Image */}
       <div className="relative w-full max-w-2xl mx-auto aspect-[16/10] mb-16">
         <Image
-          src="/hero.jpg"
+          src="/hero.png"
           alt="The journey begins"
           fill
           className="object-cover rounded-lg"
@@ -36,7 +36,7 @@ export default function Home() {
         <p className="text-gray-600 mb-4">
           Get notified when I post something new.
         </p>
-        
+
         {submitted ? (
           <p className="text-green-600 font-medium">Thanks! You're on the list.</p>
         ) : (
