@@ -83,7 +83,7 @@ async function main() {
         if (!contact.email) continue;
 
         const { error } = await resend.emails.send({
-            from: 'Jason Conroy <onboarding@resend.dev>', // Update to custom domain later
+            from: 'Jason Conroy <newsletter@jason-conroy.com>',
             to: contact.email,
             subject: subject,
             html: html,

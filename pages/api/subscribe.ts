@@ -46,7 +46,7 @@ export default async function handler(
 
         // Optional: Still notify admin strictly for monitoring (can remove later)
         await resend.emails.send({
-            from: 'Portfolio Notification <onboarding@resend.dev>',
+            from: 'Jason Conroy <newsletter@jason-conroy.com>',
             to: 'jasonmatthewconroy@gmail.com',
             subject: 'New Newsletter Subscriber!',
             html: `<p>New subscriber added to audience: <strong>${email}</strong></p>`,

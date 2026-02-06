@@ -35,8 +35,8 @@ const bookPosts: BookPost[] = [
 
         </ul>
 
-      <h2>How I'll Apply This</h2>
-      <p>I think maybe the best part of this book is that there is so much content that is actionable. I will definitely be applying many of the ideas to my life, and I will definitely be using this book as a reference for the future. I think this is a great book for anyone who is looking to start a business, or just wants to improve their business knowledge. I recently started my own startup, and it has been a struggle. While I enjoy it, and it isn't my source of income, there are certain things I have struggled with that Kaufman covers in a very simple way. His ability to explain complex concepts and ideas in an easy to read and understand way is really great. I also think this book has a lot to do with the mental aspect of business and life, so even if you aren't heavily involved in business, it can still provide you with a lot of concepts and values that you can use in your own life. I really enjoyed this book, as it covered so much, but didn't feel overwhelmingly dense. His way of writing makes it light, and the structure of the book allows the read to pick it up and put it down easily without having to study large amounts of information at a time. Really enjoyed it, and would recommend it.</p>
+      <h2>Real World Application</h2>
+      <p>The best part of this book is how actionable it is. You can definitely apply many of these ideas to your life, and use this book as a reference for years to come. Whether you are looking to start a business or just want to improve your business knowledge, this is a foundational text. Even if you aren't heavily involved in business, the mental models covered—like understanding energy cycles—apply to everyone. It encourages you to not just consume information, but to structure your life in a way that allows you to be financially sufficient while doing work that fulfills you.</p>
     `,
   },
   {
@@ -63,11 +63,9 @@ const bookPosts: BookPost[] = [
         <li><strong>Culture Shapes Identity:</strong> It is much easier to be gritty when you are part of a gritty culture. We eventually adopt the habits of the people we surround ourselves with. If you think of yourself as someone who overcomes adversity, your behavior will eventually rise to meet that identity.</li>
       </ul>
 
-      <h2>How I'll Apply This</h2>
-      <p>I definitely relate to being "distracted by talent." When I was younger, I thought it was cool to succeed without trying, but weightlifting showed me that it's okay to absolutely suck at the start. I need to bring that same "growth mindset" to everything I am working on now. Right now, sometimes I quit too easily when things are confusing, but I need to accept that I'm not naturally gifted yet and just put in the hours.</p>
-      <p>I'm going to start using the "Hard Thing Rule." I have a habit of getting really interested in something and then quitting when the "honeymoon phase" ends and it gets boring. From now on, I'm going to try harder to follow through until the natural end, no matter how hard it gets.</p>
-      <p>I strive to be "supportive yet demanding" in my relationships. It is good to be demanding of the people you love because you believe in them, but you need to add a more supportive tone sometimes so that they know you are in their corner. I also need to make sure my body language matches my words. If I say I'm positive but my face looks defeated, I'm not being gritty. I fall victim to this quite a bit!</p>
-      <p>Stop envying successful people and start using them as competition fuel. Like Pete Carroll using a Super Bowl loss as fuel, I want to use my own failures and the success of others to shape the best version of myself. Finding a "culture of grit" in your career is important—people who are on the same mission—because it's way easier to stay on the treadmill when everyone else is running too.</p>
+      <h2>Real World Application</h2>
+      <p>It is easy to be "distracted by talent" and assume successful people are just naturally gifted. However, realizing that they likely sucked at the start is empowering. Adopting a "growth mindset" allows you to accept confusion and failure as part of the process. When things get boring or difficult, that is usually just the signal that the "honeymoon phase" is over, and the real work of building grit begins.</p>
+      <p>One practical way to build this is the "Hard Thing Rule." Commit to something and refuse to quit until a natural stopping point—like the end of a season or project—rather than quitting on a bad day. Additionally, be "supportive yet demanding" with the people you lead or love. High standards coupled with deep support create an environment where grit can thrive. Finally, stop envying successful people. Use their success as fuel and competition to shape the best version of yourself, and surround yourself with a "culture of grit" to make staying on the path easier.</p>
     `,
   },
   {
@@ -94,14 +92,10 @@ const bookPosts: BookPost[] = [
         <li><strong>The Power of Time Travel:</strong> Use the 10-10-10 rule to zoom out and consult your future self. Tools like "backcasting" from success or "pre-mortems" on failure help you evaluate choices rationally before emotions take over. Wean yourself off the "outcome addiction" to find true contentment.</li>
       </ul>
 
-      <h2>How I'll Apply This</h2>
-      <p>I do think there is a lot I can take from this book and apply to my life. Sometimes I struggle with regret because I feel "I should have known". In reality, I need to accept that I can make the best bet given all I know at the moment, but good bets can still turnout bad, and bad bets can turnout good. Luck is always at play. Life is not black and white, 0% or 100%, right or wrong.</p>
-      <p>Accepting uncertainty is actually a good thing. I could do a much better job in terms of acknowledging I am not 100% sure sometimes, and be okay with living in the in-between of confident and not confident.</p>
-      <p>Find people who hold you accountable and don't all just agree with each other. That being said, not everyone needs to be committed to a truthseeking experience, and sometimes the situation just requires you to be quiet and let someone vent. It is okay to be quiet, even if you want to interject. Not everyone wants my advice all the time, sometimes they just want to complain about the world, and that is OK. There are times for advice and rationalization, and times for listening.</p>
-      <p>Sometimes I am too quick to say someone else is lucky, when I would have claimed it was skill if I had achieved the same outcome. Instead of thinking lucky vs unlucky, I can instead figure out what they did well, or what I could have done better. This leads to growth.</p>
-      <p>I can start by finding out where I agree with people. Be more open to their ideas, and the idea that I may be wrong, or just unsure! Newsflash: I don't know everything.</p>
-      <p>I can do a much better job zooming out during stressful or emotional times. There is no need to get worked up about something that has no affect on the grand scheme of life. Don't be a ticker watcher!</p>
-      <p>I tend to want to know how everything will go, so I can do more to accept the uncertainty of things, and instead just make my best bet. When I make that bet, I need to accept that luck is a huge factor, and we can never be 100% sure. I may win my bet, which is great, but I will inevitably lose quite a lot. So instead of complaining, learn from it, and use it to make a better bet next time. You will get a second chance.</p>
+      <h2>Real World Application</h2>
+      <p>We often struggle with regret because we feel we "should have known" how things would turn out. In reality, you can only make the best bet given what you know at the moment. Accepting that good bets can lose and bad bets can win is liberating. It allows you to separate the quality of your decisions from the luck of the outcome.</p>
+      <p>Embracing uncertainty is a strength, not a weakness. Being comfortable saying "I'm not sure"—or "I'm 60% sure"—allows for more honest collaboration and better decision making. Seek out people who challenge your views rather than just agreeing with you, as this prevents echo chambers.</p>
+      <p>Finally, avoid being a "ticker watcher" in life. Zooming out during stressful moments helps verify if the current problem will actually matter in 10 months or 10 years. Instead of complaining about bad luck, analyze what could have been done better. Luck is a huge factor in life, but focusing on your process ensures you are ready when the next opportunity arises.</p>
     `,
   },
   {
@@ -127,13 +121,13 @@ const bookPosts: BookPost[] = [
         <li><strong>Patience and Boldness:</strong> They were willing to sit on cash for long periods when opportunities were scarce, but when a "fat pitch" came along, they bet big. They didn't feel the need to be active just for the sake of activity.</li>
       </ul>
 
-      <h2>How I'll Apply This</h2>
-      <p>This book completely changed how I view business success. It reinforced the idea that "activity" does not equal "progress." In my own work, I want to focus less on vanity metrics (like revenue growth for its own sake) and more on the underlying value per unit of effort or capital.</p>
-      <p>I also love the concept of the "institutional imperative"—the tendency for executives to mindlessly copy their peers. Applying this to life means having the courage to look like an idiot in the short term to be a genius in the long term. Whether it's investing or career choices, I need to be comfortable being an "outsider" if the math and logic make sense, even when the crowd is going the other way.</p>
+      <h2>Real World Application</h2>
+      <p>The "Outsiders" mindset reinforces the idea that "activity" does not equal "progress." In business and life, it is often better to focus less on vanity metrics—like revenue growth or social status—and more on the underlying value per unit of effort or capital.</p>
+      <p>Beware of the "institutional imperative," which is the pressure to mindlessly copy what everyone else is doing. Applying this to the real world means having the courage to look foolish in the short term to be successful in the long term. Whether it's investing, career choices, or life decisions, you must be comfortable standing apart from the crowd if the logic and math support your path.</p>
     `,
   },
 ];
 
 export default bookPosts;
 
-// Triggering final newsletter automation test
+// Triggering newsletter automation test 2
