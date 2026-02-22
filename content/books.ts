@@ -126,6 +126,63 @@ const bookPosts: BookPost[] = [
       <p>Beware of the "institutional imperative," which is the pressure to mindlessly copy what everyone else is doing. Applying this to the real world means having the courage to look foolish in the short term to be successful in the long term. Whether it's investing, career choices, or life decisions, you must be comfortable standing apart from the crowd if the logic and math support your path.</p>
     `,
   },
+  {
+    slug: "good-to-great",
+    title: "Good to Great",
+    author: "Jim Collins",
+    date: "Feb 21, 2026",
+    dateRead: "February 15, 2026",
+    rating: 5,
+    cover: "/covers/good-to-great.jpg",
+    summary: "Why Some Companies Make the Leap... and Others Don't.",
+    content: `
+      <h2>Summary</h2>
+      <p>In Good to Great, Jim Collins and his research team identify a set of elite companies that transitioned from average performance to sustained excellence, outperforming the general stock market by several multiples over 15 years. The book dismantles the myth of the "celebrity CEO" and focuses instead on a disciplined framework of people, thought, and action. Collins argues that greatness is not a function of circumstance, but a matter of conscious choice and discipline.</p>
+      <p>The transition follows a specific trajectory: disciplined people lead to disciplined thought, which leads to disciplined action. This process creates a "Flywheel" effect—where small, consistent wins build momentum over time until a breakthrough occurs. Unlike the "Doom Loop" of reactionary changes and restructuring, great companies stay the course by sticking to their core competencies and hiring the right people before deciding where to drive the bus.</p>
+
+      <h2>My Favorite Takeaways</h2>
+      <ul>
+        <li><strong>Level 5 Leadership:</strong> The most successful leaders aren't flashy or charismatic; they are humble, quiet, and possess a paradoxical blend of personal humility and professional will. They look in the mirror when things go wrong and out the window when things go right.</li>
+        <li><strong>First Who, Then What:</strong> Before setting a vision or strategy, get the right people on the bus (and the wrong people off). If you have the right people, the problem of how to motivate and manage them largely goes away.</li>
+        <li><strong>The Hedgehog Concept:</strong> Greatness comes from the intersection of three circles: what you are deeply passionate about, what you can be the best in the world at, and what drives your economic engine. If you can't be the best at it, it shouldn't be your core business.</li>
+        <li><strong>The Stockdale Paradox:</strong> You must maintain unwavering faith that you will prevail in the end, regardless of the difficulties, while simultaneously confronting the most brutal facts of your current reality.</li>
+        <li><strong>Technology Accelerators:</strong> Great companies never use technology as the primary creator of momentum. Instead, they use carefully selected technology to accelerate the momentum they have already built through their Hedgehog Concept.</li>
+      </ul>
+
+      <h2>Real World Application</h2>
+      <p>The "Flywheel" is a perfect metaphor for career and personal growth. Success rarely comes from a single "lucky break" or a "big bang" moment. It comes from the accumulation of small, disciplined efforts that eventually reach a tipping point.</p>
+      <p>Applying the "First Who" principle to life means being incredibly selective about your inner circle. Whether in a startup or a friendship group, the quality of the people around you will dictate the ultimate destination more than any roadmap ever could. Avoid the "genius with a thousand helpers" model; instead, build a culture of rigorous self-discipline where management becomes unnecessary.</p>
+    `,
+  },
+
+  {
+    slug: "zero-to-one",
+    title: "Zero to One",
+    author: "Peter Thiel",
+    date: "Feb 21, 2026",
+    dateRead: "February 18, 2026",
+    rating: 5,
+    cover: "/covers/zero-to-one.jpg",
+    summary: "Notes on Startups, or How to Build the Future.",
+    content: `
+      <h2>Summary</h2>
+      <p>Zero to One is a contrarian manifesto on innovation. Peter Thiel argues that we live in an age of technological stagnation, hidden by the flashiness of mobile devices. Most people focus on "1 to n"—copying things that already work (horizontal progress). True innovation is "0 to 1"—creating something entirely new (vertical progress). Thiel posits that the next Bill Gates won't build an operating system, and the next Mark Zuckerberg won't build a social network.</p>
+      <p>The book challenges the standard economic praise for competition, arguing instead that "competition is for losers." To build a massively successful company, one must seek to build a creative monopoly. By doing something 10x better than anyone else or solving a problem no one else is looking at, a company can escape the cutthroat margins of a competitive market and earn the profits necessary to keep innovating.</p>
+
+      <h2>My Favorite Takeaways</h2>
+      <ul>
+        <li><strong>The Contrarian Question:</strong> "What important truth do very few people agree with you on?" Most answers are based on the present, but good answers look toward the future. This is the starting point for any 0 to 1 business.</li>
+        <li><strong>Monopoly is the Goal:</strong> Competition destroys profits. A "Creative Monopoly" is a company so good at what it does that no other firm can offer a close substitute. Think Google in search.</li>
+        <li><strong>The Power Law of Venture Capital:</strong> In startups, a small handful of companies (or investments) will outperform all others combined. You should only start a business or join a team if you believe it has the potential to be that one-in-a-million outlier.</li>
+        <li><strong>Secrets:</strong> Every great business is built around a secret—something true but difficult, or something known only to a few. If you believe there are no more secrets left to find, you’ll never look for the 0 to 1 opportunities.</li>
+        <li><strong>Sales is Everywhere:</strong> Even the most brilliant product won't sell itself. Engineers often overlook this, but distribution is as important as the product. If you’ve invented something new but haven’t invented an effective way to sell it, you have a bad business.</li>
+      </ul>
+
+      <h2>Real World Application</h2>
+      <p>Thiel’s philosophy encourages us to stop competing in crowded spaces. If you are doing what everyone else is doing, you are fighting for crumbs. Whether you are choosing a career path or a project, look for the "unpopular" or "ignored" niche where you can become the undisputed expert.</p>
+      <p>The most important lesson is to think for yourself from "First Principles." Don't just follow the "lean startup" dogmas of incremental improvement. Have the courage to have a "Definite Plan" for the future. Even a bad plan is better than no plan at all, because a plan allows you to act with intention rather than reacting to the chaos of the market.</p>
+    `,
+  },
 ];
 
 export default bookPosts;
