@@ -35,8 +35,8 @@ export default function BookPostPage({ post }: Props) {
             src={post.cover}
             alt={post.title}
             fill
+            sizes="(max-width: 768px) 256px, 256px"
             className="object-cover rounded-lg shadow-lg"
-            unoptimized
             priority
           />
         </div>

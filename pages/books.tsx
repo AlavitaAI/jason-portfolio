@@ -20,8 +20,8 @@ export default function Books() {
                     src={post.cover}
                     alt={post.title}
                     fill
+                    sizes="(max-width: 768px) 144px, 144px"
                     className="object-cover rounded-lg shadow-md hover:shadow-lg transition"
-                    unoptimized
                   />
                 </div>
               </Link>
@@ -43,9 +43,10 @@ export default function Books() {
                 </Link>
               </div>
             </div>
-          ))}
-        </div>
+          ))
+          }
+        </div >
       )}
-    </section>
+    </section >
   );
 }
