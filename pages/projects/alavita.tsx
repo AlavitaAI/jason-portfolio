@@ -42,10 +42,15 @@ export default function AlavitaProject() {
                     <div className="relative z-10 w-full max-w-[280px] flex-shrink-0">
                         <div className="relative aspect-[9/19.5] rounded-[2.5rem] border-[10px] border-neutral-800 bg-black shadow-2xl overflow-hidden flex items-center justify-center ring-1 ring-white/10">
 
-                            {/* Simulated screen content (Replace with an actual Image tag later if desired) */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 to-black flex items-center justify-center flex-col p-6 text-center">
-                                <span className="text-5xl mb-4">📱</span>
-                                <p className="text-gray-500 text-sm font-medium leading-relaxed">App Preview Image<br />(Drop an image here)</p>
+                            {/* Simulated screen content */}
+                            <div className="absolute inset-0 bg-black">
+                                <Image
+                                    src="/alavita-preview.png"
+                                    alt="Alavita iOS App Preview"
+                                    fill
+                                    className="object-cover object-top"
+                                    quality={100}
+                                />
                             </div>
 
                             {/* iPhone Notch Simulation */}
