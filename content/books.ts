@@ -183,6 +183,160 @@ const bookPosts: BookPost[] = [
       <p>The most important lesson is to think for yourself from "First Principles." Don't just follow the "lean startup" dogmas of incremental improvement. Have the courage to have a "Definite Plan" for the future. Even a bad plan is better than no plan at all, because a plan allows you to act with intention rather than reacting to the chaos of the market.</p>
     `,
   },
+  {
+    slug: "the-lean-startup",
+    title: "The Lean Startup",
+    author: "Eric Ries",
+    date: "TBD",
+    dateRead: "TBD",
+    rating: 0,
+    cover: "/covers/the-lean-startup.jpg",
+    summary: "Template for The Lean Startup.",
+    content: `
+      <h2>Summary</h2>
+      <p>Content coming soon...</p>
+
+      <h2>My Favorite Takeaways</h2>
+      <ul>
+        <li>Takeaway 1</li>
+      </ul>
+
+      <h2>Real World Application</h2>
+      <p>Application coming soon...</p>
+    `,
+  },
+  {
+    slug: "the-mom-test",
+    title: "The Mom Test",
+    author: "Rob Fitzpatrick",
+    date: "TBD",
+    dateRead: "TBD",
+    rating: 0,
+    cover: "/covers/the-mom-test.jpg",
+    summary: "Template for The Mom Test.",
+    content: `
+      <h2>Summary</h2>
+      <p>Content coming soon...</p>
+
+      <h2>My Favorite Takeaways</h2>
+      <ul>
+        <li>Takeaway 1</li>
+      </ul>
+
+      <h2>Real World Application</h2>
+      <p>Application coming soon...</p>
+    `,
+  },
+  {
+    slug: "obviously-awesome",
+    title: "Obviously Awesome",
+    author: "April Dunford",
+    date: "TBD",
+    dateRead: "TBD",
+    rating: 0,
+    cover: "/covers/obviously-awesome.jpg",
+    summary: "Template for Obviously Awesome.",
+    content: `
+      <h2>Summary</h2>
+      <p>Content coming soon...</p>
+
+      <h2>My Favorite Takeaways</h2>
+      <ul>
+        <li>Takeaway 1</li>
+      </ul>
+
+      <h2>Real World Application</h2>
+      <p>Application coming soon...</p>
+    `,
+  },
+  {
+    slug: "hooked",
+    title: "Hooked",
+    author: "Nir Eyal",
+    date: "TBD",
+    dateRead: "TBD",
+    rating: 0,
+    cover: "/covers/hooked.jpg",
+    summary: "Template for Hooked.",
+    content: `
+      <h2>Summary</h2>
+      <p>Content coming soon...</p>
+
+      <h2>My Favorite Takeaways</h2>
+      <ul>
+        <li>Takeaway 1</li>
+      </ul>
+
+      <h2>Real World Application</h2>
+      <p>Application coming soon...</p>
+    `,
+  },
+  {
+    slug: "traction",
+    title: "Traction",
+    author: "Gabriel Weinberg and Justin Mares",
+    date: "TBD",
+    dateRead: "TBD",
+    rating: 0,
+    cover: "/covers/traction.jpg",
+    summary: "Template for Traction.",
+    content: `
+      <h2>Summary</h2>
+      <p>Content coming soon...</p>
+
+      <h2>My Favorite Takeaways</h2>
+      <ul>
+        <li>Takeaway 1</li>
+      </ul>
+
+      <h2>Real World Application</h2>
+      <p>Application coming soon...</p>
+    `,
+  },
+  {
+    slug: "the-psychology-of-money",
+    title: "The Psychology of Money",
+    author: "Morgan Housel",
+    date: "TBD",
+    dateRead: "TBD",
+    rating: 0,
+    cover: "/covers/the-psychology-of-money.jpg",
+    summary: "Template for The Psychology of Money.",
+    content: `
+      <h2>Summary</h2>
+      <p>Content coming soon...</p>
+
+      <h2>My Favorite Takeaways</h2>
+      <ul>
+        <li>Takeaway 1</li>
+      </ul>
+
+      <h2>Real World Application</h2>
+      <p>Application coming soon...</p>
+    `,
+  },
+  {
+    slug: "how-to-win-friends-and-influence-people",
+    title: "How to Win Friends and Influence People",
+    author: "Dale Carnegie",
+    date: "TBD",
+    dateRead: "TBD",
+    rating: 0,
+    cover: "/covers/how-to-win-friends-and-influence-people.jpg",
+    summary: "Template for How to Win Friends and Influence People.",
+    content: `
+      <h2>Summary</h2>
+      <p>Content coming soon...</p>
+
+      <h2>My Favorite Takeaways</h2>
+      <ul>
+        <li>Takeaway 1</li>
+      </ul>
+
+      <h2>Real World Application</h2>
+      <p>Application coming soon...</p>
+    `,
+  },
 ];
 
 export default bookPosts;
