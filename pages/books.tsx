@@ -5,13 +5,14 @@ import bookPosts from "@/content/books";
 export default function Books() {
   return (
     <section className="container-xl py-16">
-      <h1 className="text-5xl font-bold mb-12">My Books</h1>
+      <h1 className="text-5xl font-bold mb-6">My Books</h1>
+      <h2 className="text-3xl font-semibold mb-10 text-gray-700">2026's Books</h2>
 
       {bookPosts.length === 0 ? (
         <p className="text-gray-500 italic">First post coming soon...</p>
       ) : (
         <div className="space-y-12">
-          {bookPosts.map((post) => (
+          {bookPosts.map((post, index) => (
             <div key={post.slug} className="flex gap-8">
               {/* Cover Image */}
               <Link href={`/books/${post.slug}`} className="flex-shrink-0">
@@ -30,7 +31,7 @@ export default function Books() {
               <div className="flex flex-col justify-center">
                 <Link href={`/books/${post.slug}`}>
                   <h2 className="text-2xl font-bold mb-2 hover:text-gray-600 transition">
-                    {post.title}
+                    {index + 1}. {post.title}
                   </h2>
                 </Link>
                 <p className="text-gray-600 mb-3">{post.summary}</p>
