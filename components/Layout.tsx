@@ -8,10 +8,10 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   const links = [
     { href: "/", label: "Home" },
-    { href: "/projects", label: "Projects" },
-    { href: "/books", label: "Books" },
-    { href: "/finance", label: "Finance" },
-    { href: "/ai", label: "AI" },
+    // { href: "/projects", label: "Projects" },
+    // { href: "/books", label: "Books" },
+    // { href: "/finance", label: "Finance" },
+    // { href: "/ai", label: "AI" },
     { href: "/worldcup", label: "⚽ World Cup 2026" },
   ];
 
