@@ -1316,6 +1316,9 @@ async function pullFromCentral() {
     const res = await fetch(CENTRAL_BIN);
     if (!res.ok) return;
     const remote = await res.json();
+    
+    let hasNewLocal = false;
+    
     if (remote.players) {
       Object.keys(remote.players).forEach(name => {
         if (name !== state.currentPlayer) {
@@ -1323,10 +1326,26 @@ async function pullFromCentral() {
         }
       });
     }
+    
+    // Check if we have local players that are not yet on the server
+    if (state.players) {
+      Object.keys(state.players).forEach(name => {
+        if (!remote.players || !remote.players[name]) {
+          hasNewLocal = true;
+        }
+      });
+    }
+    
     if (remote.adminResults) {
       state.adminResults = remote.adminResults;
     }
+    
     localStorage.setItem(STORAGE_KEY, JSON.stringify({players:state.players, adminResults:state.adminResults}));
+    
+    // Auto-push local players to server if they are missing remotely
+    if (hasNewLocal) {
+      await pushToCentral();
+    }
   } catch (e) {
     console.error('pullFromCentral error:', e);
   }
@@ -1450,6 +1469,14 @@ function startPlayer() {
 function loadPlayer(name) {
   state.currentPlayer = name;
   document.getElementById('player-name-input').value = name;
+  
+  // Mark this player as active/local on this device so it shows up in Saved Brackets on Home
+  if (!state.myPlayers) state.myPlayers = [];
+  if (!state.myPlayers.includes(name)) {
+    state.myPlayers.push(name);
+    localStorage.setItem('wc2026_my_players', JSON.stringify(state.myPlayers));
+  }
+  
   updateHeader();
   showToast(`Loaded bracket for ${name}`,'info');
   go('groups');
