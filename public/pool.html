@@ -676,6 +676,29 @@ input,select,textarea{font-family:'Outfit',sans-serif}
     <div class="home-subtitle mt-8">Pick your winners. Climb the leaderboard. Glory awaits.</div>
   </div>
 
+  <!-- Signed-in status card (shown dynamically by renderHome) -->
+  <div id="home-signedin-card" style="display:none; background:linear-gradient(135deg,rgba(59,130,246,0.12) 0%,rgba(245,158,11,0.08) 100%); border:1px solid rgba(59,130,246,0.35); border-radius:14px; padding:18px 20px; margin-bottom:18px; position:relative; overflow:hidden;">
+    <div style="position:absolute;top:0;right:0;width:120px;height:120px;background:radial-gradient(circle,rgba(59,130,246,0.15),transparent 70%);pointer-events:none"></div>
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <div style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue-dim));display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0">👤</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:0.72rem;color:var(--text-3);font-weight:600;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:2px">Signed In As</div>
+        <div id="si-name" style="font-size:1.1rem;font-weight:800;color:var(--text-1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+          <div style="flex:1;height:4px;background:var(--bg-3);border-radius:2px;overflow:hidden">
+            <div id="si-prog-bar" style="height:100%;background:linear-gradient(90deg,var(--blue),var(--gold));border-radius:2px;transition:width .4s"></div>
+          </div>
+          <span id="si-prog-text" style="font-size:0.72rem;color:var(--blue);font-weight:700;white-space:nowrap"></span>
+          <span id="si-score" style="font-size:0.72rem;color:var(--gold);font-weight:700;white-space:nowrap"></span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+        <button class="btn btn-primary btn-sm" onclick="go('groups')" style="white-space:nowrap">✏️ Edit My Picks</button>
+        <button class="btn btn-secondary btn-sm" onclick="signOutPlayer()" style="white-space:nowrap">🚪 Switch User</button>
+      </div>
+    </div>
+  </div>
+
   <div class="home-layout">
     <!-- Enter name card -->
     <div class="home-card">
@@ -1393,11 +1416,9 @@ async function pushToCentral() {
       body.adminResults = state.adminResults;
       body.adminPassword = 'admin2026';
     } else {
-      const myNames = state.myPlayers || [];
-      if (myNames.length === 0 && state.currentPlayer) {
-        myNames.push(state.currentPlayer);
-      }
-      if (myNames.length === 0) return;
+      // Always include currentPlayer in myPlayers for this push
+      const myNames = Array.from(new Set([...(state.myPlayers || []), ...(state.currentPlayer ? [state.currentPlayer] : [])]));
+      if (myNames.length === 0) return false;
       
       const payloadPlayers = {};
       const creds = JSON.parse(localStorage.getItem('wc2026_credentials') || '{}');
@@ -1412,7 +1433,7 @@ async function pushToCentral() {
         }
       });
       if (Object.keys(payloadPlayers).length === 0) {
-        return; // Skip sync as there are no finalized brackets
+        return false; // No finalized brackets to sync
       }
       body.players = payloadPlayers;
     }
@@ -1437,14 +1458,17 @@ async function pushToCentral() {
       }
       localStorage.setItem(STORAGE_KEY, JSON.stringify({players:state.players, adminResults:state.adminResults}));
       restoreLocalPasscodes();
+      return true;
     } else {
       const errData = await res.json().catch(() => ({}));
       if (errData.error) {
         showToast(errData.error, 'error');
       }
+      return false;
     }
   } catch (e) {
     console.error('pushToCentral error:', e);
+    return false;
   }
 }
 
@@ -1464,10 +1488,15 @@ async function pullFromCentral() {
       localNames.forEach(name => {
         const p = state.players[name];
         const isMine = state.myPlayers && state.myPlayers.includes(name);
-        const hasPass = p && (p.hasPasscode || (p.passcode && p.passcode.trim().length >= 4));
+        // hasPass = true means bracket was finalized and synced to server
+        const hasPass = p && (p.hasPasscode || (p.passcode && p.passcode.trim().length >= 4) ||
+          !!(JSON.parse(localStorage.getItem('wc2026_credentials') || '{}')[name]));
         
         if (!remote.players[name]) {
-          if (!isMine || hasPass) {
+          // Only keep bracket locally if it's MINE and was NEVER synced (no passcode = never finalized)
+          // Delete if: not mine, OR mine but was previously synced (admin deleted it)
+          const keepLocally = isMine && !hasPass;
+          if (!keepLocally) {
             delete state.players[name];
             if (creds[name]) delete creds[name];
             if (state.myPlayers) {
@@ -1567,12 +1596,14 @@ function go(view) {
     case 'admin': renderAdmin(); break;
   }
   
-  if (view === 'leaderboard' || view === 'home') {
+  if (view === 'leaderboard' || view === 'home' || view === 'admin') {
     pullFromCentral().then(() => {
       if (view === 'leaderboard' && document.getElementById('view-leaderboard').classList.contains('active')) {
         renderLeaderboard();
       } else if (view === 'home' && document.getElementById('view-home').classList.contains('active')) {
         renderHome();
+      } else if (view === 'admin' && document.getElementById('view-admin').classList.contains('active') && state.adminUnlocked) {
+        renderAdminContent();
       }
     });
   }
@@ -1583,9 +1614,31 @@ function go(view) {
 /* ===========================================================
    HOME
 =========================================================== */
+function signOutPlayer() {
+  state.currentPlayer = null;
+  updateHeader();
+  renderHome();
+  showToast('Switched user — enter a name to load or create a bracket.', 'info');
+}
+
 function renderHome() {
   const input = document.getElementById('player-name-input');
-  if (state.currentPlayer) input.value = state.currentPlayer;
+  const siCard = document.getElementById('home-signedin-card');
+  
+  if (state.currentPlayer && state.players[state.currentPlayer]) {
+    // Show signed-in card
+    const pct = getCompletion(state.currentPlayer);
+    const score = (state.players[state.currentPlayer].score || 0);
+    document.getElementById('si-name').textContent = state.currentPlayer;
+    document.getElementById('si-prog-bar').style.width = pct + '%';
+    document.getElementById('si-prog-text').textContent = pct + '% complete';
+    document.getElementById('si-score').textContent = score + ' pts';
+    siCard.style.display = 'block';
+    input.value = state.currentPlayer;
+  } else {
+    siCard.style.display = 'none';
+    if (state.currentPlayer) input.value = state.currentPlayer;
+  }
   renderSavedPlayers();
 }
 
@@ -1627,22 +1680,23 @@ function startPlayer() {
 
   const isNew = !state.players[name];
   if (isNew) {
-    prompt2(`Create Passcode for "${name}"`, `Choose a 4-digit passcode to secure your bracket so others cannot edit it from their devices.`, (chosenPasscode) => {
+    prompt2(`Create Passcode for "${name}"`, `Choose a 4-digit passcode to secure your bracket so others cannot edit it from their devices.`, async (chosenPasscode) => {
       if (!chosenPasscode || chosenPasscode.trim().length < 4) {
         showToast('Passcode must be at least 4 characters/digits!','error');
         return;
       }
+      const passcode = chosenPasscode.trim();
       state.currentPlayer = name;
       state.players[name] = {
         groupPicks: {},
         thirdPicks: [],
         bracketPicks: {},
         score: 0,
-        passcode: chosenPasscode.trim()
+        passcode: passcode
       };
       
       const creds = JSON.parse(localStorage.getItem('wc2026_credentials') || '{}');
-      creds[name] = chosenPasscode.trim();
+      creds[name] = passcode;
       localStorage.setItem('wc2026_credentials', JSON.stringify(creds));
       
       if (!state.myPlayers) state.myPlayers = [];
@@ -1651,9 +1705,17 @@ function startPlayer() {
         localStorage.setItem('wc2026_my_players', JSON.stringify(state.myPlayers));
       }
       
-      saveState();
+      // Save locally first, then push to server and await confirmation
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({players:state.players, adminResults:state.adminResults}));
       updateHeader();
-      showToast(`Welcome, ${name}! Bracket secured with passcode.`,'success');
+      showToast(`Creating bracket for ${name}...`, 'info');
+      const saved = await pushToCentral();
+      if (saved) {
+        showToast(`Welcome, ${name}! Bracket saved to leaderboard! 🎉`, 'success');
+      } else {
+        showToast(`Welcome, ${name}! Saved locally (sync issue — try again later).`, 'info');
+      }
+      renderHome();
       go('groups');
     });
   } else {

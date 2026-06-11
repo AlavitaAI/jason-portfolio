@@ -32,8 +32,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (req.method === 'GET') {
+    // Prevent Vercel CDN and browsers from caching stale data
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
     try {
-      const response = await fetch(CENTRAL_BIN);
+      // Cache-bust the ExtendsClass fetch with a timestamp
+      const response = await fetch(`${CENTRAL_BIN}?t=${Date.now()}`, {
+        headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
+      });
       if (!response.ok) {
         throw new Error(`Failed to fetch from extendsclass: ${response.status}`);
       }
@@ -49,8 +56,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       const { action, playerName, passcode, players, adminResults, deletePlayerName, adminPassword } = req.body;
 
-      // 1. Fetch current remote state
-      const response = await fetch(CENTRAL_BIN);
+      // 1. Fetch current remote state (cache-busted)
+      const response = await fetch(`${CENTRAL_BIN}?t=${Date.now()}`, {
+        headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
+      });
       let remote: { players: Record<string, any>; adminResults: any } = { players: {}, adminResults: {} };
       if (response.ok) {
         try {
