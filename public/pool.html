@@ -443,6 +443,103 @@ input,select,textarea{font-family:'Outfit',sans-serif}
 .lb-empty{text-align:center;padding:50px 20px;color:var(--text-4)}
 .lb-empty-icon{font-size:2.5rem;margin-bottom:10px}
 
+/* ===== RULES ===== */
+.rules-container {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.rules-card {
+  background: var(--bg-1);
+  border: 1px solid var(--border-bright);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.rules-card h3 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: var(--blue-bright);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.rules-card p {
+  font-size: 0.86rem;
+  color: var(--text-2);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+.rules-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+}
+.rules-table th, .rules-table td {
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.8rem;
+}
+.rules-table th {
+  font-weight: 700;
+  color: var(--text-3);
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.5px;
+}
+.rules-table td {
+  color: var(--text-1);
+}
+.tier-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+.tier-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tier-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+.tier-teams-list {
+  font-size: 0.78rem;
+  color: var(--text-3);
+  line-height: 1.35;
+}
+.rules-example {
+  background: rgba(59, 130, 246, 0.04);
+  border-left: 3px solid var(--blue);
+  padding: 10px 12px;
+  border-radius: 0 6px 6px 0;
+  margin-top: 10px;
+}
+.rules-example-title {
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--blue-bright);
+  margin-bottom: 3px;
+}
+.rules-example-text {
+  font-size: 0.78rem;
+  color: var(--text-2);
+  line-height: 1.4;
+}
+
 /* ===== ADMIN ===== */
 .admin-lock{max-width:380px;margin:60px auto;text-align:center}
 .admin-lock .icon{font-size:3.5rem;margin-bottom:14px}
@@ -560,6 +657,7 @@ input,select,textarea{font-family:'Outfit',sans-serif}
     <button class="nav-tab" onclick="go('bracket')" data-tab="bracket"><span class="nav-icon">🏆</span>Bracket</button>
     <button class="nav-tab" onclick="go('score')" data-tab="score"><span class="nav-icon">📊</span>My Score</button>
     <button class="nav-tab" onclick="go('leaderboard')" data-tab="leaderboard"><span class="nav-icon">🥇</span>Leaderboard</button>
+    <button class="nav-tab" onclick="go('rules')" data-tab="rules"><span class="nav-icon">📖</span>Rules</button>
     <button class="nav-tab" onclick="go('admin')" data-tab="admin"><span class="nav-icon">⚙️</span>Admin</button>
   </div>
 </nav>
@@ -754,6 +852,177 @@ input,select,textarea{font-family:'Outfit',sans-serif}
       <div>#</div><div>Player</div><div>Score</div><div>Done</div><div></div>
     </div>
     <div id="lb-body"></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     RULES VIEW
+============================================================ -->
+<div id="view-rules" class="view">
+  <div class="section-header">
+    <div>
+      <div class="section-title">📖 <span>Scoring Rules</span></div>
+      <div class="section-sub">Detailed breakdown of the World Cup 2026 Prediction Pool points system.</div>
+    </div>
+  </div>
+
+  <div class="rules-container">
+    <div class="rules-card">
+      <h3>📈 Points Breakdown</h3>
+      <p>Points are awarded for correct predictions across the group stage and the knockout tournament. Each point is scaled by the team's <strong>Tier Multiplier</strong>.</p>
+      
+      <table class="rules-table">
+        <thead>
+          <tr>
+            <th>Prediction Stage</th>
+            <th>Base Points</th>
+            <th>Scoring Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Group Stage: Advancement</td>
+            <td><strong>10 pts</strong></td>
+            <td>Per correct team predicted to finish 1st or 2nd and advance.</td>
+          </tr>
+          <tr>
+            <td>Group Winner Bonus</td>
+            <td><strong>+5 pts</strong></td>
+            <td>Extra bonus if you correctly predict the exact 1st place team.</td>
+          </tr>
+          <tr>
+            <td>Group Runner-Up Bonus</td>
+            <td><strong>+2 pts</strong></td>
+            <td>Extra bonus if you correctly predict the exact 2nd place team.</td>
+          </tr>
+          <tr>
+            <td>3rd Place Qualifiers</td>
+            <td><strong>10 pts</strong></td>
+            <td>Per correct team predicted to be in the top 8 advancing 3rd-place teams (from your ranked top 8).</td>
+          </tr>
+          <tr>
+            <td>Round of 32 Match Win</td>
+            <td><strong>5 pts</strong></td>
+            <td>For each correct winner chosen to advance to the Round of 16.</td>
+          </tr>
+          <tr>
+            <td>Round of 16 Match Win</td>
+            <td><strong>10 pts</strong></td>
+            <td>For each correct winner chosen to advance to the Quarterfinals.</td>
+          </tr>
+          <tr>
+            <td>Quarterfinal Match Win</td>
+            <td><strong>20 pts</strong></td>
+            <td>For each correct winner chosen to advance to the Semifinals.</td>
+          </tr>
+          <tr>
+            <td>Semifinal Match Win</td>
+            <td><strong>40 pts</strong></td>
+            <td>For each correct winner chosen to advance to the Final.</td>
+          </tr>
+          <tr>
+            <td>Third-Place Match Win</td>
+            <td><strong>40 pts</strong></td>
+            <td>For correctly predicting the winner of the 3rd-place playoff match.</td>
+          </tr>
+          <tr>
+            <td>Final Match Win</td>
+            <td><strong>80 pts</strong></td>
+            <td>For correctly predicting the winner of the Final match.</td>
+          </tr>
+          <tr>
+            <td>Tournament Champion</td>
+            <td><strong>150 pts</strong></td>
+            <td>Extra bonus for correctly predicting the overall World Cup winner (added to Final win points).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rules-card">
+      <h3>⚡ Tier Multipliers</h3>
+      <p>Lower-ranked or underdog teams are assigned higher multipliers. Correct predictions involving these teams earn significantly more points!</p>
+      
+      <div class="tier-grid">
+        <div class="tier-card">
+          <div class="tier-card-header">
+            <span>Tier 1</span>
+            <span class="tier-badge t1">×1.0</span>
+          </div>
+          <div class="tier-teams-list">
+            Spain, France, Argentina, Portugal, Brazil, England
+          </div>
+        </div>
+        <div class="tier-card">
+          <div class="tier-card-header">
+            <span>Tier 2</span>
+            <span class="tier-badge t2">×1.3</span>
+          </div>
+          <div class="tier-teams-list">
+            Germany, Netherlands, Morocco, Belgium, Croatia, Norway
+          </div>
+        </div>
+        <div class="tier-card">
+          <div class="tier-card-header">
+            <span>Tier 3</span>
+            <span class="tier-badge t3">×1.7</span>
+          </div>
+          <div class="tier-teams-list">
+            Colombia, Senegal, Japan, Türkiye, USA, Uruguay, Mexico, Ecuador, South Korea, Canada, Switzerland, Ivory Coast
+          </div>
+        </div>
+        <div class="tier-card">
+          <div class="tier-card-header">
+            <span>Tier 4</span>
+            <span class="tier-badge t4">×2.2</span>
+          </div>
+          <div class="tier-teams-list">
+            Sweden, Ghana, Paraguay, Czechia, Algeria, Australia, Egypt, South Africa, Scotland, Austria
+          </div>
+        </div>
+        <div class="tier-card">
+          <div class="tier-card-header">
+            <span>Tier 5</span>
+            <span class="tier-badge t5">×3.0</span>
+          </div>
+          <div class="tier-teams-list">
+            Bosnia-Herzegovina, Panama, Saudi Arabia, Iran
+          </div>
+        </div>
+        <div class="tier-card">
+          <div class="tier-card-header">
+            <span>Tier 6</span>
+            <span class="tier-badge t6">×4.0</span>
+          </div>
+          <div class="tier-teams-list">
+            Haiti, Curaçao, Iraq, Cape Verde, Uzbekistan, Congo DR, Tunisia, Qatar, New Zealand, Jordan
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rules-card">
+      <h3>🧮 Calculation Examples</h3>
+      
+      <div class="rules-example">
+        <div class="rules-example-title">Example 1: Group Stage (USA - Tier 3, ×1.7)</div>
+        <div class="rules-example-text">
+          If you predict USA to finish 1st in Group D, and they actually finish 1st:<br>
+          • <strong>Correct Advancement</strong>: 10 pts × 1.7 = 17 pts<br>
+          • <strong>Group Winner Bonus</strong>: 5 pts × 1.7 = 8.5 pts (rounded)<br>
+          • <strong>Total</strong>: 25.5 pts (final score rounded to 26 pts).
+        </div>
+      </div>
+
+      <div class="rules-example" style="margin-top:16px; border-left-color: var(--gold);">
+        <div class="rules-example-title" style="color: var(--gold);">Example 2: Knockout Stages (Haiti - Tier 6, ×4.0)</div>
+        <div class="rules-example-text">
+          If you predict Haiti to advance in the Round of 32, and they pull off an upset:<br>
+          • <strong>Round of 32 Win</strong>: 5 pts × 4.0 = 20 pts!<br>
+          • <em>Comparison</em>: France (Tier 1) winning their Round of 32 match yields only 5 pts (5 × 1.0).
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1014,6 +1283,7 @@ function go(view) {
     case 'bracket': renderBracket(); break;
     case 'score': renderScore(); break;
     case 'leaderboard': renderLeaderboard(); break;
+    case 'rules': break;
     case 'admin': renderAdmin(); break;
   }
   window.scrollTo({top:0,behavior:'smooth'});
