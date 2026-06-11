@@ -1290,22 +1290,29 @@ function updateHeader() {
 /* ===========================================================
    NAVIGATION
 =========================================================== */
-const CENTRAL_BIN = 'https://extendsclass.com/api/json-storage/bin/bdcedcb';
+const DB_URL = '/api/worldcup/db';
 
 async function pushToCentral() {
   try {
-    const res = await fetch(CENTRAL_BIN);
-    let remote = { players: {}, adminResults: {} };
-    if (res.ok) {
-      remote = await res.json();
-    }
-    const mergedPlayers = { ...(remote.players || {}), ...state.players };
-    const mergedAdmin = { ...(remote.adminResults || {}), ...state.adminResults };
-    await fetch(CENTRAL_BIN, {
-      method: 'PUT',
+    const res = await fetch(DB_URL, {
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ players: mergedPlayers, adminResults: mergedAdmin })
+      body: JSON.stringify({ players: state.players, adminResults: state.adminResults })
     });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.players) {
+        Object.keys(data.players).forEach(name => {
+          if (name !== state.currentPlayer) {
+            state.players[name] = data.players[name];
+          }
+        });
+      }
+      if (data.adminResults) {
+        state.adminResults = data.adminResults;
+      }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({players:state.players, adminResults:state.adminResults}));
+    }
   } catch (e) {
     console.error('pushToCentral error:', e);
   }
@@ -1313,7 +1320,7 @@ async function pushToCentral() {
 
 async function pullFromCentral() {
   try {
-    const res = await fetch(CENTRAL_BIN);
+    const res = await fetch(DB_URL);
     if (!res.ok) return;
     const remote = await res.json();
     
@@ -1342,7 +1349,6 @@ async function pullFromCentral() {
     
     localStorage.setItem(STORAGE_KEY, JSON.stringify({players:state.players, adminResults:state.adminResults}));
     
-    // Auto-push local players to server if they are missing remotely
     if (hasNewLocal) {
       await pushToCentral();
     }
@@ -1353,17 +1359,11 @@ async function pullFromCentral() {
 
 async function deletePlayerCentrally(name) {
   try {
-    const res = await fetch(CENTRAL_BIN);
-    if (!res.ok) return;
-    const remote = await res.json();
-    if (remote.players && remote.players[name]) {
-      delete remote.players[name];
-      await fetch(CENTRAL_BIN, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(remote)
-      });
-    }
+    await fetch(DB_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ deletePlayerName: name })
+    });
   } catch(e) {
     console.error('deletePlayerCentrally error:', e);
   }
