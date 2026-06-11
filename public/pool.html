@@ -1278,11 +1278,20 @@ function handleDragEnd(e) {
 let touchSourceEl = null;
 
 function handleTouchStart(e) {
+  const isHandle = e.target.classList.contains('drag-handle') || e.target.closest('.drag-handle');
+  if (!isHandle) {
+    touchSourceEl = null;
+    return;
+  }
   touchSourceEl = this;
   this.classList.add('dragging');
 }
 
 function handleTouchMove(e) {
+  if (!touchSourceEl) return;
+  if (e.cancelable) {
+    e.preventDefault();
+  }
   const touchY = e.touches[0].clientY;
   const listItems = document.querySelectorAll('.third-rank-item');
   const container = document.querySelector('.third-rank-list');
@@ -1937,7 +1946,15 @@ function saveAdminResults() {
   }).filter(Boolean);
   state.adminResults.thirdQualifiers = thirds;
   saveState();
-  showToast('Results saved! ✓','success');
+  
+  // Auto recalculate all scores when results are saved
+  Object.keys(state.players).forEach(name => {
+    state.players[name].score = calcScore(name);
+  });
+  saveState();
+  
+  showToast('Results saved & scores updated! ✓','success');
+  renderLeaderboard();
 }
 
 function recalcAllScores() {
