@@ -1206,35 +1206,48 @@ const GROUPS = [
   {id:'L',teams:['England','Croatia','Ghana','Panama']}
 ];
 
-// Round of 32 matchup definitions using slot notation
+// Round of 32 — official FIFA 2026 bracket seeding
+// Left side (top to bottom): M1-M8 | Right side (top to bottom): M9-M16
+// 3P1-3P8 = user's ranked 3rd-place picks (best → 8th best)
 const R32 = [
-  {id:'m1', a:'A1',b:'3P8',lbl:'R32 · Match 1'},
-  {id:'m2', a:'B1',b:'3P7',lbl:'R32 · Match 2'},
-  {id:'m3', a:'C1',b:'L2',lbl:'R32 · Match 3'},
-  {id:'m4', a:'D1',b:'3P6',lbl:'R32 · Match 4'},
-  {id:'m5', a:'E1',b:'3P5',lbl:'R32 · Match 5'},
-  {id:'m6', a:'F1',b:'K2',lbl:'R32 · Match 6'},
-  {id:'m7', a:'G1',b:'3P4',lbl:'R32 · Match 7'},
-  {id:'m8', a:'H1',b:'3P3',lbl:'R32 · Match 8'},
-  {id:'m9', a:'I1',b:'J2',lbl:'R32 · Match 9'},
-  {id:'m10',a:'J1',b:'3P2',lbl:'R32 · Match 10'},
-  {id:'m11',a:'K1',b:'3P1',lbl:'R32 · Match 11'},
-  {id:'m12',a:'L1',b:'I2',lbl:'R32 · Match 12'},
-  {id:'m13',a:'A2',b:'H2',lbl:'R32 · Match 13'},
-  {id:'m14',a:'B2',b:'G2',lbl:'R32 · Match 14'},
-  {id:'m15',a:'C2',b:'F2',lbl:'R32 · Match 15'},
-  {id:'m16',a:'D2',b:'E2',lbl:'R32 · Match 16'}
+  // --- LEFT BRACKET ---
+  // Top-left quarter
+  {id:'m1',  a:'E1',  b:'3P1', lbl:'R32 · Match 1'},   // 1E vs 3rd(ABCDF)
+  {id:'m2',  a:'I1',  b:'3P2', lbl:'R32 · Match 2'},   // 1I vs 3rd(CDFGH)
+  {id:'m3',  a:'A2',  b:'B2',  lbl:'R32 · Match 3'},   // 2A vs 2B
+  {id:'m4',  a:'F1',  b:'C2',  lbl:'R32 · Match 4'},   // 1F vs 2C
+  // Bottom-left quarter
+  {id:'m5',  a:'K2',  b:'L2',  lbl:'R32 · Match 5'},   // 2K vs 2L
+  {id:'m6',  a:'H1',  b:'J2',  lbl:'R32 · Match 6'},   // 1H vs 2J
+  {id:'m7',  a:'D1',  b:'3P3', lbl:'R32 · Match 7'},   // 1D vs 3rd(BEFIJ)
+  {id:'m8',  a:'G1',  b:'3P4', lbl:'R32 · Match 8'},   // 1G vs 3rd(AEHIJ)
+  // --- RIGHT BRACKET ---
+  // Top-right quarter
+  {id:'m9',  a:'C1',  b:'F2',  lbl:'R32 · Match 9'},   // 1C vs 2F
+  {id:'m10', a:'E2',  b:'I2',  lbl:'R32 · Match 10'},  // 2E vs 2I
+  {id:'m11', a:'A1',  b:'3P5', lbl:'R32 · Match 11'},  // 1A vs 3rd(CEFHI)
+  {id:'m12', a:'L1',  b:'3P6', lbl:'R32 · Match 12'},  // 1L vs 3rd(EHIJK)
+  // Bottom-right quarter
+  {id:'m13', a:'J1',  b:'H2',  lbl:'R32 · Match 13'},  // 1J vs 2H
+  {id:'m14', a:'D2',  b:'G2',  lbl:'R32 · Match 14'},  // 2D vs 2G
+  {id:'m15', a:'B1',  b:'3P7', lbl:'R32 · Match 15'},  // 1B vs 3rd(EFGIJ)
+  {id:'m16', a:'K1',  b:'3P8', lbl:'R32 · Match 16'},  // 1K vs 3rd(DEJL)
 ];
 const R16 = [
-  {id:'r16a',a:'W:m1', b:'W:m2', lbl:'R16 · Match 1'},
-  {id:'r16b',a:'W:m3', b:'W:m4', lbl:'R16 · Match 2'},
-  {id:'r16c',a:'W:m5', b:'W:m6', lbl:'R16 · Match 3'},
-  {id:'r16d',a:'W:m7', b:'W:m8', lbl:'R16 · Match 4'},
-  {id:'r16e',a:'W:m9', b:'W:m10',lbl:'R16 · Match 5'},
-  {id:'r16f',a:'W:m11',b:'W:m12',lbl:'R16 · Match 6'},
-  {id:'r16g',a:'W:m13',b:'W:m14',lbl:'R16 · Match 7'},
-  {id:'r16h',a:'W:m15',b:'W:m16',lbl:'R16 · Match 8'}
+  // Left bracket: top-left quarter winners meet
+  {id:'r16a', a:'W:m1',  b:'W:m2',  lbl:'R16 · Match 1'},
+  {id:'r16b', a:'W:m3',  b:'W:m4',  lbl:'R16 · Match 2'},
+  // Left bracket: bottom-left quarter winners meet
+  {id:'r16c', a:'W:m5',  b:'W:m6',  lbl:'R16 · Match 3'},
+  {id:'r16d', a:'W:m7',  b:'W:m8',  lbl:'R16 · Match 4'},
+  // Right bracket: top-right quarter winners meet
+  {id:'r16e', a:'W:m9',  b:'W:m10', lbl:'R16 · Match 5'},
+  {id:'r16f', a:'W:m11', b:'W:m12', lbl:'R16 · Match 6'},
+  // Right bracket: bottom-right quarter winners meet
+  {id:'r16g', a:'W:m13', b:'W:m14', lbl:'R16 · Match 7'},
+  {id:'r16h', a:'W:m15', b:'W:m16', lbl:'R16 · Match 8'},
 ];
+
 const QF = [
   {id:'qf1',a:'W:r16a',b:'W:r16b',lbl:'QF 1'},
   {id:'qf2',a:'W:r16c',b:'W:r16d',lbl:'QF 2'},
