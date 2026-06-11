@@ -795,7 +795,7 @@ input,select,textarea{font-family:'Outfit',sans-serif}
     </div>
     <div class="section-actions" id="bracket-actions">
       <button class="btn btn-secondary btn-sm" onclick="clearBracketPicks()">🗑 Reset</button>
-      <button class="btn btn-primary btn-sm" onclick="saveState();showToast('Bracket saved!','success')">💾 Save</button>
+      <button class="btn btn-primary btn-sm" onclick="finalizeBracket()">💾 Save</button>
     </div>
   </div>
 
@@ -1094,6 +1094,12 @@ input,select,textarea{font-family:'Outfit',sans-serif}
       <p class="text-sm text-muted mb-4">Select the winner of each knockout round match.</p>
       <div class="admin-ko-grid" id="admin-ko-grid"></div>
     </div>
+
+    <div class="mt-24 pt-24" style="border-top:1px solid var(--border-color); margin-top:24px; padding-top:24px;">
+      <h3 class="text-gold font-bold mb-8" style="font-size:.95rem;letter-spacing:.3px">🗑️ MANAGE BRACKETS</h3>
+      <p class="text-sm text-muted mb-16" style="margin-bottom:16px;">Delete any bracket from the database permanently.</p>
+      <div id="admin-brackets-list"></div>
+    </div>
   </div>
 </div>
 
@@ -1262,6 +1268,42 @@ function saveState() {
   }
 }
 
+function finalizeBracket() {
+  if (isLocked()) {
+    showToast('Submissions are closed. Predictions can no longer be edited.','error');
+    return;
+  }
+  if (!state.currentPlayer) {
+    showToast('Please enter your name on the Home tab first!','error');
+    return;
+  }
+  const p = state.players[state.currentPlayer];
+  if (!p) return;
+
+  const hasPass = p.hasPasscode || !!p.passcode;
+  if (hasPass) {
+    saveState();
+    showToast('Bracket saved!','success');
+  } else {
+    prompt2('Create Passcode to Finalize', 'Choose a 4-digit passcode to finalize your bracket and save it to the leaderboard. Only you will be able to edit it.', async (newPass) => {
+      if (newPass && newPass.trim().length >= 4) {
+        const passcode = newPass.trim();
+        p.passcode = passcode;
+        
+        const creds = JSON.parse(localStorage.getItem('wc2026_credentials') || '{}');
+        creds[state.currentPlayer] = passcode;
+        localStorage.setItem('wc2026_credentials', JSON.stringify(creds));
+        
+        await pushToCentral();
+        showToast('Bracket finalized and saved to leaderboard! 🎉','success');
+        renderBracket();
+      } else {
+        showToast('Passcode must be at least 4 characters/digits!','error');
+      }
+    });
+  }
+}
+
 function loadState() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -1361,11 +1403,17 @@ async function pushToCentral() {
       const creds = JSON.parse(localStorage.getItem('wc2026_credentials') || '{}');
       myNames.forEach(name => {
         if (state.players[name]) {
-          const pClone = JSON.parse(JSON.stringify(state.players[name]));
-          pClone.passcode = creds[name] || pClone.passcode || '';
-          payloadPlayers[name] = pClone;
+          const passcode = creds[name] || state.players[name].passcode || '';
+          if (passcode.trim().length >= 4) {
+            const pClone = JSON.parse(JSON.stringify(state.players[name]));
+            pClone.passcode = passcode;
+            payloadPlayers[name] = pClone;
+          }
         }
       });
+      if (Object.keys(payloadPlayers).length === 0) {
+        return; // Skip sync as there are no finalized brackets
+      }
       body.players = payloadPlayers;
     }
 
@@ -1529,7 +1577,6 @@ function renderSavedPlayers() {
       </div>
       <div class="player-pill-right">
         <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation();loadPlayer('${esc(name)}')">Load</button>
-        <button class="btn btn-danger btn-xs" onclick="event.stopPropagation();confirmDeletePlayer('${esc(name)}')">✕</button>
       </div>
     </div>`;
   });
@@ -1547,35 +1594,25 @@ function startPlayer() {
 
   const isNew = !state.players[name];
   if (isNew) {
-    prompt2(`Create Passcode for "${name}"`, `Choose a 4-digit passcode to secure your bracket so others cannot edit it from their devices.`, (chosenPasscode) => {
-      if (!chosenPasscode || chosenPasscode.trim().length < 4) {
-        showToast('Passcode must be at least 4 characters/digits!','error');
-        return;
-      }
-      state.currentPlayer = name;
-      state.players[name] = {
-        groupPicks: {},
-        thirdPicks: [],
-        bracketPicks: {},
-        score: 0,
-        passcode: chosenPasscode.trim()
-      };
-      
-      const creds = JSON.parse(localStorage.getItem('wc2026_credentials') || '{}');
-      creds[name] = chosenPasscode.trim();
-      localStorage.setItem('wc2026_credentials', JSON.stringify(creds));
-      
-      if (!state.myPlayers) state.myPlayers = [];
-      if (!state.myPlayers.includes(name)) {
-        state.myPlayers.push(name);
-        localStorage.setItem('wc2026_my_players', JSON.stringify(state.myPlayers));
-      }
-      
-      saveState();
-      updateHeader();
-      showToast(`Welcome, ${name}! Bracket secured with passcode.`,'success');
-      go('groups');
-    });
+    state.currentPlayer = name;
+    state.players[name] = {
+      groupPicks: {},
+      thirdPicks: [],
+      bracketPicks: {},
+      score: 0,
+      passcode: ''
+    };
+    
+    if (!state.myPlayers) state.myPlayers = [];
+    if (!state.myPlayers.includes(name)) {
+      state.myPlayers.push(name);
+      localStorage.setItem('wc2026_my_players', JSON.stringify(state.myPlayers));
+    }
+    
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({players:state.players, adminResults:state.adminResults}));
+    updateHeader();
+    showToast(`Welcome, ${name}! Start making your picks.`,'success');
+    go('groups');
   } else {
     loadPlayer(name);
   }
@@ -1665,33 +1702,41 @@ async function loadPlayer(name) {
       promptForPasscode(name);
     }
   } else {
-    prompt2(`Create Passcode for "${name}"`, `Choose a 4-digit passcode to protect your bracket.`, async (newPass) => {
-      if (newPass && newPass.trim().length >= 4) {
-        const passcode = newPass.trim();
-        p.passcode = passcode;
-        creds[name] = passcode;
-        localStorage.setItem('wc2026_credentials', JSON.stringify(creds));
-        if (!state.myPlayers) state.myPlayers = [];
-        if (!state.myPlayers.includes(name)) {
-          state.myPlayers.push(name);
-          localStorage.setItem('wc2026_my_players', JSON.stringify(state.myPlayers));
+    if (state.myPlayers && state.myPlayers.includes(name)) {
+      state.currentPlayer = name;
+      document.getElementById('player-name-input').value = name;
+      updateHeader();
+      showToast(`Loaded unfinalized bracket for ${name}`, 'info');
+      go('groups');
+    } else {
+      prompt2(`Create Passcode for "${name}"`, `Choose a 4-digit passcode to protect your bracket.`, async (newPass) => {
+        if (newPass && newPass.trim().length >= 4) {
+          const passcode = newPass.trim();
+          p.passcode = passcode;
+          creds[name] = passcode;
+          localStorage.setItem('wc2026_credentials', JSON.stringify(creds));
+          if (!state.myPlayers) state.myPlayers = [];
+          if (!state.myPlayers.includes(name)) {
+            state.myPlayers.push(name);
+            localStorage.setItem('wc2026_my_players', JSON.stringify(state.myPlayers));
+          }
+          await pushToCentral();
+          state.currentPlayer = name;
+          document.getElementById('player-name-input').value = name;
+          updateHeader();
+          showToast(`Passcode set! Loaded bracket for ${name}.`,'success');
+          go('groups');
+        } else {
+          showToast('Invalid passcode. Loading in Read-Only mode.','error');
+          state.viewedPlayer = name;
+          go('bracket');
         }
-        await pushToCentral();
-        state.currentPlayer = name;
-        document.getElementById('player-name-input').value = name;
-        updateHeader();
-        showToast(`Passcode set! Loaded bracket for ${name}.`,'success');
-        go('groups');
-      } else {
-        showToast('Invalid passcode. Loading in Read-Only mode.','error');
+      }, () => {
         state.viewedPlayer = name;
         go('bracket');
-      }
-    }, () => {
-      state.viewedPlayer = name;
-      go('bracket');
-      showToast(`Viewing ${name}'s bracket (Read-Only)`,'info');
-    });
+        showToast(`Viewing ${name}'s bracket (Read-Only)`,'info');
+      });
+    }
   }
 }
 
@@ -2138,6 +2183,13 @@ function renderBracket() {
     } else {
       if (actionsEl) actionsEl.style.display = 'flex';
       if (viewedBanner) viewedBanner.style.display = 'none';
+      
+      const saveBtn = actionsEl ? actionsEl.querySelector('.btn-primary') : null;
+      if (saveBtn) {
+        const pCurrent = state.players[state.currentPlayer];
+        const hasPass = pCurrent && (pCurrent.hasPasscode || !!pCurrent.passcode);
+        saveBtn.innerHTML = hasPass ? '💾 Save' : '💾 Finalize & Save';
+      }
     }
   }
 
@@ -2535,6 +2587,7 @@ function renderAdmin() {
 function renderAdminContent() {
   renderAdminGroups();
   renderAdminKO();
+  renderAdminBrackets();
 }
 
 function renderAdminGroups() {
@@ -2603,6 +2656,58 @@ function renderAdminKO() {
     </div>`;
   });
   document.getElementById('admin-ko-grid').innerHTML = html;
+}
+
+function renderAdminBrackets() {
+  const el = document.getElementById('admin-brackets-list');
+  if (!el) return;
+  const names = Object.keys(state.players).sort((a,b) => a.localeCompare(b));
+  if (!names.length) {
+    el.innerHTML = '<div class="empty-saved">No brackets in the database yet.</div>';
+    return;
+  }
+  let html = '<div class="admin-brackets-grid" style="display:flex; flex-direction:column; gap:8px;">';
+  names.forEach(name => {
+    const p = state.players[name];
+    const score = p.score || 0;
+    const pct = getCompletion(name);
+    html += `
+      <div class="admin-bracket-row" style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-2); padding:10px 16px; border-radius:6px; border:1px solid var(--border-color)">
+        <div>
+          <span style="font-weight:600; color:var(--text-1)">${esc(name)}</span>
+          <span style="font-size:0.8rem; color:var(--text-3); margin-left:8px;">${pct}% complete · ${score} pts</span>
+        </div>
+        <button class="btn btn-danger btn-xs" onclick="adminDeleteBracket('${esc(name)}')">Delete Bracket</button>
+      </div>`;
+  });
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+async function adminDeleteBracket(name) {
+  confirm2(`Delete "${name}" permanently?`, 'This will remove the bracket from the centralized database immediately. This action cannot be undone.', async () => {
+    try {
+      const res = await fetch(DB_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ deletePlayerName: name, adminPassword: 'admin2026' })
+      });
+      if (res.ok) {
+        delete state.players[name];
+        state.myPlayers = (state.myPlayers || []).filter(n => n !== name);
+        localStorage.setItem('wc2026_my_players', JSON.stringify(state.myPlayers));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({players:state.players, adminResults:state.adminResults}));
+        renderAdminContent();
+        showToast(`Bracket "${name}" deleted successfully.`, 'success');
+      } else {
+        const errData = await res.json().catch(() => ({}));
+        showToast(errData.error || 'Failed to delete bracket centrally.', 'error');
+      }
+    } catch (e) {
+      console.error('adminDeleteBracket error:', e);
+      showToast('Error deleting bracket.', 'error');
+    }
+  });
 }
 
 function setAdminKO(matchId, winner) {

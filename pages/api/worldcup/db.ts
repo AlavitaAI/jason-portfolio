@@ -114,17 +114,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // Passcode & Lock validation for player deletion
       if (deletePlayerName) {
         if (!isAdmin) {
-          if (isLocked) {
-            return res.status(403).json({ error: 'Submissions are closed. Brackets can no longer be deleted.' });
-          }
-          const stored = (remote.players && remote.players[deletePlayerName]) || null;
-          if (stored) {
-            const storedPass = stored.passcode;
-            const incomingPass = passcode;
-            if (storedPass && storedPass !== incomingPass) {
-              return res.status(403).json({ error: `Incorrect passcode. You are not authorized to delete ${deletePlayerName}'s bracket.` });
-            }
-          }
+          return res.status(403).json({ error: 'Only the administrator is authorized to delete brackets.' });
         }
       }
 
