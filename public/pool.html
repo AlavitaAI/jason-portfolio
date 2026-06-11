@@ -736,9 +736,17 @@ input,select,textarea{font-family:'Outfit',sans-serif}
       <div class="section-title">Group Stage <span>Picks</span></div>
       <div class="section-sub">Select 1st and 2nd place for each group. Then pick 8 third-place qualifiers.</div>
     </div>
-    <div class="section-actions">
+    <div class="section-actions" id="groups-actions">
       <button class="btn btn-secondary btn-sm" onclick="clearGroupPicks()">🗑 Clear</button>
       <button class="btn btn-primary btn-sm" onclick="saveAndContinue()">Save & Continue →</button>
+    </div>
+  </div>
+
+  <div class="lock-banner" id="groups-lock-banner" style="display:none; align-items:center; gap:8px; background:rgba(239,68,68,.12); border:1px solid var(--red); border-radius:8px; padding:10px 14px; margin-bottom:18px">
+    <span style="font-size:1.15rem">🔒</span>
+    <div>
+      <div style="font-weight:700; font-size:.85rem; color:var(--red)">Submissions Closed</div>
+      <div style="font-size:.72rem; color:var(--text-3)">The June 11, 3:00 PM EST deadline has passed. Predictions can no longer be edited.</div>
     </div>
   </div>
 
@@ -788,6 +796,14 @@ input,select,textarea{font-family:'Outfit',sans-serif}
     <div class="section-actions" id="bracket-actions">
       <button class="btn btn-secondary btn-sm" onclick="clearBracketPicks()">🗑 Reset</button>
       <button class="btn btn-primary btn-sm" onclick="saveState();showToast('Bracket saved!','success')">💾 Save</button>
+    </div>
+  </div>
+
+  <div class="lock-banner" id="bracket-lock-banner" style="display:none; align-items:center; gap:8px; background:rgba(239,68,68,.12); border:1px solid var(--red); border-radius:8px; padding:10px 14px; margin-bottom:18px">
+    <span style="font-size:1.15rem">🔒</span>
+    <div>
+      <div style="font-weight:700; font-size:.85rem; color:var(--red)">Submissions Closed</div>
+      <div style="font-size:.72rem; color:var(--text-3)">The June 11, 3:00 PM EST deadline has passed. Predictions can no longer be edited.</div>
     </div>
   </div>
 
@@ -1098,8 +1114,27 @@ input,select,textarea{font-family:'Outfit',sans-serif}
   </div>
 </div>
 
+<!-- Prompt Modal -->
+<div class="modal-overlay" id="prompt-modal">
+  <div class="modal">
+    <h3 id="prompt-title">Enter Passcode</h3>
+    <p id="prompt-msg" style="margin-bottom:12px; font-size:0.85rem; color:var(--text-2); line-height:1.5;"></p>
+    <div class="input-group" style="margin-bottom:16px">
+      <input type="password" id="prompt-input" class="input-field" placeholder="Enter 4-digit passcode" maxlength="20" style="text-align:center; font-size:1.1rem; letter-spacing:2px;" />
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" id="prompt-cancel">Cancel</button>
+      <button class="btn btn-primary" id="prompt-ok">Submit</button>
+    </div>
+  </div>
+</div>
+
 <script>
 'use strict';
+const LOCK_TIME = new Date('2026-06-11T15:00:00-04:00').getTime();
+function isLocked() {
+  return Date.now() > LOCK_TIME;
+}
 /* ===========================================================
    DATA
 =========================================================== */
@@ -1204,6 +1239,20 @@ const STORAGE_KEY = 'wc2026_pool_v2';
 /* ===========================================================
    STORAGE
 =========================================================== */
+function restoreLocalPasscodes() {
+  try {
+    const creds = JSON.parse(localStorage.getItem('wc2026_credentials') || '{}');
+    const myNames = state.myPlayers || [];
+    myNames.forEach(name => {
+      if (state.players[name] && creds[name]) {
+        state.players[name].passcode = creds[name];
+      }
+    });
+  } catch (e) {
+    console.error('restoreLocalPasscodes error:', e);
+  }
+}
+
 function saveState() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({players:state.players,adminResults:state.adminResults}));
@@ -1212,6 +1261,7 @@ function saveState() {
     showToast('Save failed: storage full?','error');
   }
 }
+
 function loadState() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -1227,6 +1277,7 @@ function loadState() {
       state.myPlayers = Object.keys(state.players);
       localStorage.setItem('wc2026_my_players', JSON.stringify(state.myPlayers));
     }
+    restoreLocalPasscodes();
   } catch(e) {console.error('loadState',e);}
 }
 
@@ -1294,11 +1345,36 @@ const DB_URL = '/api/worldcup/db';
 
 async function pushToCentral() {
   try {
+    const body = {};
+    if (state.adminUnlocked) {
+      body.players = state.players;
+      body.adminResults = state.adminResults;
+      body.adminPassword = 'admin2026';
+    } else {
+      const myNames = state.myPlayers || [];
+      if (myNames.length === 0 && state.currentPlayer) {
+        myNames.push(state.currentPlayer);
+      }
+      if (myNames.length === 0) return;
+      
+      const payloadPlayers = {};
+      const creds = JSON.parse(localStorage.getItem('wc2026_credentials') || '{}');
+      myNames.forEach(name => {
+        if (state.players[name]) {
+          const pClone = JSON.parse(JSON.stringify(state.players[name]));
+          pClone.passcode = creds[name] || pClone.passcode || '';
+          payloadPlayers[name] = pClone;
+        }
+      });
+      body.players = payloadPlayers;
+    }
+
     const res = await fetch(DB_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ players: state.players, adminResults: state.adminResults })
+      body: JSON.stringify(body)
     });
+    
     if (res.ok) {
       const data = await res.json();
       if (data.players) {
@@ -1312,6 +1388,12 @@ async function pushToCentral() {
         state.adminResults = data.adminResults;
       }
       localStorage.setItem(STORAGE_KEY, JSON.stringify({players:state.players, adminResults:state.adminResults}));
+      restoreLocalPasscodes();
+    } else {
+      const errData = await res.json().catch(() => ({}));
+      if (errData.error) {
+        showToast(errData.error, 'error');
+      }
     }
   } catch (e) {
     console.error('pushToCentral error:', e);
@@ -1334,7 +1416,6 @@ async function pullFromCentral() {
       });
     }
     
-    // Check if we have local players that are not yet on the server
     if (state.players) {
       Object.keys(state.players).forEach(name => {
         if (!remote.players || !remote.players[name]) {
@@ -1348,6 +1429,7 @@ async function pullFromCentral() {
     }
     
     localStorage.setItem(STORAGE_KEY, JSON.stringify({players:state.players, adminResults:state.adminResults}));
+    restoreLocalPasscodes();
     
     if (hasNewLocal) {
       await pushToCentral();
@@ -1359,11 +1441,20 @@ async function pullFromCentral() {
 
 async function deletePlayerCentrally(name) {
   try {
-    await fetch(DB_URL, {
+    const creds = JSON.parse(localStorage.getItem('wc2026_credentials') || '{}');
+    const passcode = creds[name] || (state.players[name] && state.players[name].passcode) || '';
+    
+    const res = await fetch(DB_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ deletePlayerName: name })
+      body: JSON.stringify({ deletePlayerName: name, passcode: passcode })
     });
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      if (errData.error) {
+        showToast(errData.error, 'error');
+      }
+    }
   } catch(e) {
     console.error('deletePlayerCentrally error:', e);
   }
@@ -1448,38 +1539,160 @@ function renderSavedPlayers() {
 function startPlayer() {
   const name = document.getElementById('player-name-input').value.trim();
   if (!name) { showToast('Please enter your name!','error'); return; }
+  
+  if (isLocked()) {
+    showToast('Submissions are closed. New brackets cannot be created.','error');
+    return;
+  }
+
   const isNew = !state.players[name];
-  state.currentPlayer = name;
   if (isNew) {
-    state.players[name] = {groupPicks:{},thirdPicks:[],bracketPicks:{},score:0};
-    showToast(`Welcome, ${name}! New bracket created.`,'success');
+    prompt2(`Create Passcode for "${name}"`, `Choose a 4-digit passcode to secure your bracket so others cannot edit it from their devices.`, (chosenPasscode) => {
+      if (!chosenPasscode || chosenPasscode.trim().length < 4) {
+        showToast('Passcode must be at least 4 characters/digits!','error');
+        return;
+      }
+      state.currentPlayer = name;
+      state.players[name] = {
+        groupPicks: {},
+        thirdPicks: [],
+        bracketPicks: {},
+        score: 0,
+        passcode: chosenPasscode.trim()
+      };
+      
+      const creds = JSON.parse(localStorage.getItem('wc2026_credentials') || '{}');
+      creds[name] = chosenPasscode.trim();
+      localStorage.setItem('wc2026_credentials', JSON.stringify(creds));
+      
+      if (!state.myPlayers) state.myPlayers = [];
+      if (!state.myPlayers.includes(name)) {
+        state.myPlayers.push(name);
+        localStorage.setItem('wc2026_my_players', JSON.stringify(state.myPlayers));
+      }
+      
+      saveState();
+      updateHeader();
+      showToast(`Welcome, ${name}! Bracket secured with passcode.`,'success');
+      go('groups');
+    });
   } else {
-    showToast(`Welcome back, ${name}!`,'success');
+    loadPlayer(name);
   }
-  if (!state.myPlayers) state.myPlayers = [];
-  if (!state.myPlayers.includes(name)) {
-    state.myPlayers.push(name);
-    localStorage.setItem('wc2026_my_players', JSON.stringify(state.myPlayers));
-  }
-  saveState();
-  updateHeader();
-  go('groups');
 }
 
-function loadPlayer(name) {
-  state.currentPlayer = name;
-  document.getElementById('player-name-input').value = name;
-  
-  // Mark this player as active/local on this device so it shows up in Saved Brackets on Home
-  if (!state.myPlayers) state.myPlayers = [];
-  if (!state.myPlayers.includes(name)) {
-    state.myPlayers.push(name);
-    localStorage.setItem('wc2026_my_players', JSON.stringify(state.myPlayers));
+async function verifyPasscodeServer(name, pass) {
+  try {
+    const res = await fetch(DB_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'verify', playerName: name, passcode: pass })
+    });
+    if (res.ok) {
+      const data = await res.json();
+      return !!data.success;
+    }
+  } catch (e) {
+    console.error('verifyPasscodeServer error:', e);
   }
-  
-  updateHeader();
-  showToast(`Loaded bracket for ${name}`,'info');
-  go('groups');
+  return false;
+}
+
+function promptForPasscode(name) {
+  prompt2(`Enter Passcode for "${name}"`, `This bracket is passcode-protected. Enter the passcode to unlock editing, or cancel to view in Read-Only mode.`, async (enteredPass) => {
+    const ok = await verifyPasscodeServer(name, enteredPass);
+    if (ok) {
+      const creds = JSON.parse(localStorage.getItem('wc2026_credentials') || '{}');
+      creds[name] = enteredPass;
+      localStorage.setItem('wc2026_credentials', JSON.stringify(creds));
+      state.currentPlayer = name;
+      document.getElementById('player-name-input').value = name;
+      if (!state.myPlayers) state.myPlayers = [];
+      if (!state.myPlayers.includes(name)) {
+        state.myPlayers.push(name);
+        localStorage.setItem('wc2026_my_players', JSON.stringify(state.myPlayers));
+      }
+      updateHeader();
+      showToast(`Unlocked and loaded bracket for ${name}!`, 'success');
+      go('groups');
+    } else {
+      showToast('Incorrect passcode. Loading in Read-Only mode.', 'error');
+      state.viewedPlayer = name;
+      go('bracket');
+    }
+  }, () => {
+    state.viewedPlayer = name;
+    go('bracket');
+    showToast(`Viewing ${name}'s bracket (Read-Only)`, 'info');
+  });
+}
+
+async function loadPlayer(name) {
+  const p = state.players[name];
+  if (!p) return;
+
+  if (isLocked()) {
+    state.viewedPlayer = name;
+    go('bracket');
+    showToast(`Submissions closed. Viewing ${name}'s bracket (Read-Only).`,'info');
+    return;
+  }
+
+  const hasPass = p.hasPasscode || !!p.passcode;
+  const creds = JSON.parse(localStorage.getItem('wc2026_credentials') || '{}');
+  const localPass = creds[name];
+
+  if (hasPass) {
+    if (localPass) {
+      const ok = await verifyPasscodeServer(name, localPass);
+      if (ok) {
+        state.currentPlayer = name;
+        document.getElementById('player-name-input').value = name;
+        if (!state.myPlayers) state.myPlayers = [];
+        if (!state.myPlayers.includes(name)) {
+          state.myPlayers.push(name);
+          localStorage.setItem('wc2026_my_players', JSON.stringify(state.myPlayers));
+        }
+        updateHeader();
+        showToast(`Loaded bracket for ${name}`,'info');
+        go('groups');
+      } else {
+        delete creds[name];
+        localStorage.setItem('wc2026_credentials', JSON.stringify(creds));
+        promptForPasscode(name);
+      }
+    } else {
+      promptForPasscode(name);
+    }
+  } else {
+    prompt2(`Create Passcode for "${name}"`, `Choose a 4-digit passcode to protect your bracket.`, async (newPass) => {
+      if (newPass && newPass.trim().length >= 4) {
+        const passcode = newPass.trim();
+        p.passcode = passcode;
+        creds[name] = passcode;
+        localStorage.setItem('wc2026_credentials', JSON.stringify(creds));
+        if (!state.myPlayers) state.myPlayers = [];
+        if (!state.myPlayers.includes(name)) {
+          state.myPlayers.push(name);
+          localStorage.setItem('wc2026_my_players', JSON.stringify(state.myPlayers));
+        }
+        await pushToCentral();
+        state.currentPlayer = name;
+        document.getElementById('player-name-input').value = name;
+        updateHeader();
+        showToast(`Passcode set! Loaded bracket for ${name}.`,'success');
+        go('groups');
+      } else {
+        showToast('Invalid passcode. Loading in Read-Only mode.','error');
+        state.viewedPlayer = name;
+        go('bracket');
+      }
+    }, () => {
+      state.viewedPlayer = name;
+      go('bracket');
+      showToast(`Viewing ${name}'s bracket (Read-Only)`,'info');
+    });
+  }
 }
 
 function confirmDeletePlayer(name) {
@@ -1510,6 +1723,10 @@ function exportPicks() {
 }
 
 function importPicks(e) {
+  if (isLocked()) {
+    showToast('Submissions are closed. Imports are disabled.','error');
+    return;
+  }
   const file = e.target.files[0];
   if (!file) return;
   const reader = new FileReader();
@@ -1541,6 +1758,18 @@ function renderGroups() {
   grid.innerHTML = '';
   let done = 0;
 
+  const lockBanner = document.getElementById('groups-lock-banner');
+  const groupsActions = document.getElementById('groups-actions');
+  const timeLocked = isLocked();
+
+  if (timeLocked) {
+    if (lockBanner) lockBanner.style.display = 'flex';
+    if (groupsActions) groupsActions.style.display = 'none';
+  } else {
+    if (lockBanner) lockBanner.style.display = 'none';
+    if (groupsActions) groupsActions.style.display = 'flex';
+  }
+
   GROUPS.forEach(g => {
     const gp = p.groupPicks[g.id] || {};
     const complete = !!(gp.first && gp.second && gp.third);
@@ -1560,9 +1789,9 @@ function renderGroups() {
         <span class="team-name">${esc(team)}${upset}</span>
         ${tierBadge(team)}
         <div class="pick-btns">
-          <button class="pick-btn${is1?' sel-1st':''}" onclick="setGrpPick('${g.id}','${esc(team)}','first')">1st</button>
-          <button class="pick-btn${is2?' sel-2nd':''}" onclick="setGrpPick('${g.id}','${esc(team)}','second')">2nd</button>
-          <button class="pick-btn${is3?' sel-3rd':''}" onclick="setGrpPick('${g.id}','${esc(team)}','third')">3rd</button>
+          <button class="pick-btn${is1?' sel-1st':''}" ${timeLocked?'disabled style="cursor:default;opacity:0.8;"':''} onclick="setGrpPick('${g.id}','${esc(team)}','first')">1st</button>
+          <button class="pick-btn${is2?' sel-2nd':''}" ${timeLocked?'disabled style="cursor:default;opacity:0.8;"':''} onclick="setGrpPick('${g.id}','${esc(team)}','second')">2nd</button>
+          <button class="pick-btn${is3?' sel-3rd':''}" ${timeLocked?'disabled style="cursor:default;opacity:0.8;"':''} onclick="setGrpPick('${g.id}','${esc(team)}','third')">3rd</button>
         </div>
       </div>`;
     });
@@ -1585,6 +1814,7 @@ function renderGroups() {
 }
 
 function setGrpPick(gId, team, pos) {
+  if (isLocked()) return;
   const p = pd();
   if (!p.groupPicks[gId]) p.groupPicks[gId] = {};
   const gp = p.groupPicks[gId];
@@ -1757,6 +1987,10 @@ function renderThirdSection() {
   countEl.style.display = 'inline-flex';
   countEl.textContent = `${sel.length} / 12 ranked`;
 
+  const locked = isLocked();
+  const dragAttr = locked ? 'draggable="false"' : 'draggable="true"';
+  const handleHtml = locked ? '' : '<div class="drag-handle">☰</div>';
+
   let html = '<div class="third-rank-list">';
   sel.forEach((team, idx) => {
     const rank = idx + 1;
@@ -1765,8 +1999,8 @@ function renderThirdSection() {
     const statusTxt = isAdvancing ? `<span class="status-badge adv">Advancing (3P${rank})</span>` : `<span class="status-badge elim">Eliminated</span>`;
     
     html += `
-      <div class="${itemCls}" draggable="true" data-idx="${idx}" data-team="${esc(team)}">
-        <div class="drag-handle">☰</div>
+      <div class="${itemCls}" ${dragAttr} data-idx="${idx}" data-team="${esc(team)}">
+        ${handleHtml}
         <div class="rank-num">${rank}</div>
         <div class="team-info">
           <span class="team-flag" style="font-size:1.15rem">${fl(team)}</span>
@@ -1781,16 +2015,18 @@ function renderThirdSection() {
   
   teamsEl.innerHTML = html;
 
-  const items = teamsEl.querySelectorAll('.third-rank-item');
-  items.forEach(item => {
-    item.addEventListener('dragstart', handleDragStart);
-    item.addEventListener('dragover', handleDragOver);
-    item.addEventListener('dragend', handleDragEnd);
-    
-    item.addEventListener('touchstart', handleTouchStart, { passive: true });
-    item.addEventListener('touchmove', handleTouchMove, { passive: false });
-    item.addEventListener('touchend', handleTouchEnd, { passive: true });
-  });
+  if (!locked) {
+    const items = teamsEl.querySelectorAll('.third-rank-item');
+    items.forEach(item => {
+      item.addEventListener('dragstart', handleDragStart);
+      item.addEventListener('dragover', handleDragOver);
+      item.addEventListener('dragend', handleDragEnd);
+      
+      item.addEventListener('touchstart', handleTouchStart, { passive: true });
+      item.addEventListener('touchmove', handleTouchMove, { passive: false });
+      item.addEventListener('touchend', handleTouchEnd, { passive: true });
+    });
+  }
 }
 
 function clearGroupPicks() {
@@ -1878,20 +2114,31 @@ function renderBracket() {
   const grpsDone = GROUPS.every(g => {const gp=((p||{}).groupPicks||{})[g.id]||{};return gp.first&&gp.second;});
   document.getElementById('bracket-locked').style.display = grpsDone ? 'none' : 'block';
 
+  const lockBanner = document.getElementById('bracket-lock-banner');
   const isViewOnly = !!state.viewedPlayer;
+  const isTimeLocked = isLocked();
+  const isReadOnly = isViewOnly || isTimeLocked;
+  
   const actionsEl = document.getElementById('bracket-actions');
   const viewedBanner = document.getElementById('viewed-banner');
   const viewedText = document.getElementById('viewed-banner-text');
 
-  if (isViewOnly) {
+  if (isTimeLocked) {
+    if (lockBanner) lockBanner.style.display = 'flex';
     if (actionsEl) actionsEl.style.display = 'none';
-    if (viewedBanner) {
-      viewedBanner.style.display = 'flex';
-      viewedText.textContent = `Viewing ${state.viewedPlayer}'s bracket (Read-Only)`;
-    }
-  } else {
-    if (actionsEl) actionsEl.style.display = 'flex';
     if (viewedBanner) viewedBanner.style.display = 'none';
+  } else {
+    if (lockBanner) lockBanner.style.display = 'none';
+    if (isViewOnly) {
+      if (actionsEl) actionsEl.style.display = 'none';
+      if (viewedBanner) {
+        viewedBanner.style.display = 'flex';
+        viewedText.textContent = `Viewing ${state.viewedPlayer}'s bracket (Read-Only)`;
+      }
+    } else {
+      if (actionsEl) actionsEl.style.display = 'flex';
+      if (viewedBanner) viewedBanner.style.display = 'none';
+    }
   }
 
   if (!grpsDone) {
@@ -1962,7 +2209,7 @@ function renderBracket() {
           ${isW ? '<span class="bt-crown">✓</span>' : ''}
           ${upsetWin ? '<span class="bt-bolt" title="Upset!">⚡</span>' : ''}
         `;
-        if (!isTbd && !isViewOnly) div.addEventListener('click', () => setBracketPick(match.id, team));
+        if (!isTbd && !isReadOnly) div.addEventListener('click', () => setBracketPick(match.id, team));
         bm.appendChild(div);
       });
 
@@ -1991,7 +2238,7 @@ function renderBracket() {
       const d = document.createElement('div');
       d.className = 'bt' + (isW?' winner':'') + (isL?' loser':'');
       d.innerHTML = `<span class="bt-flag">${fl(team)}</span><span class="bt-name">${esc(team)}</span>${isW?'<span class="bt-crown">🥉</span>':''}`;
-      if (!isViewOnly) d.addEventListener('click', () => setBracketPick('third', team));
+      if (!isReadOnly) d.addEventListener('click', () => setBracketPick('third', team));
       box.appendChild(d);
     });
     thirdDiv.appendChild(box);
@@ -2434,6 +2681,43 @@ function closeModal() {
 
 document.getElementById('confirm-modal').addEventListener('click', function(e) {
   if (e.target===this) closeModal();
+});
+
+function prompt2(title, msg, onOk, onCancel) {
+  document.getElementById('prompt-title').textContent = title;
+  document.getElementById('prompt-msg').textContent = msg;
+  const input = document.getElementById('prompt-input');
+  input.value = '';
+  
+  const okBtn = document.getElementById('prompt-ok');
+  const newOk = okBtn.cloneNode(true);
+  okBtn.parentNode.replaceChild(newOk, okBtn);
+  
+  const cancelBtn = document.getElementById('prompt-cancel');
+  const newCancel = cancelBtn.cloneNode(true);
+  cancelBtn.parentNode.replaceChild(newCancel, cancelBtn);
+  
+  newOk.addEventListener('click', () => {
+    const val = input.value.trim();
+    closePromptModal();
+    if (onOk) onOk(val);
+  });
+  
+  newCancel.addEventListener('click', () => {
+    closePromptModal();
+    if (onCancel) onCancel();
+  });
+  
+  document.getElementById('prompt-modal').classList.add('open');
+  input.focus();
+}
+
+function closePromptModal() {
+  document.getElementById('prompt-modal').classList.remove('open');
+}
+
+document.getElementById('prompt-modal').addEventListener('click', function(e) {
+  if (e.target===this) closePromptModal();
 });
 
 /* ===========================================================
