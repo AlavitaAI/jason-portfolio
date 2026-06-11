@@ -761,36 +761,42 @@ input,select,textarea{font-family:'Outfit',sans-serif}
    DATA
 =========================================================== */
 const TIERS = {
+  // Tier 1 (×1.0) - Top Favorites
   Spain:1,France:1,Argentina:1,Portugal:1,Brazil:1,England:1,
+  // Tier 2 (×1.3) - Strong Contenders
   Germany:2,Netherlands:2,Morocco:2,Belgium:2,Croatia:2,Norway:2,
-  Colombia:3,Senegal:3,Japan:3,Turkey:3,USA:3,Uruguay:3,Mexico:3,Ecuador:3,'South Korea':3,
-  Sweden:4,Ghana:4,Paraguay:4,'Czech Republic':4,Algeria:4,Australia:4,Egypt:4,Cameroon:4,Romania:4,Poland:4,Serbia:4,China:4,
-  Bosnia:5,Panama:5,'Saudi Arabia':5,Iran:5,'South Africa':5,'Costa Rica':5,
-  Haiti:6,Curacao:6,Iraq:6,'Cape Verde':6,Uzbekistan:6,'DR Congo':6,Tunisia:6,Qatar:6,'New Zealand':6
+  // Tier 3 (×1.7) - Solid Teams
+  Colombia:3,Senegal:3,Japan:3,'Türkiye':3,USA:3,Uruguay:3,Mexico:3,Ecuador:3,'South Korea':3,Canada:3,Switzerland:3,'Ivory Coast':3,
+  // Tier 4 (×2.2) - Mid-Table
+  Sweden:4,Ghana:4,Paraguay:4,'Czechia':4,Algeria:4,Australia:4,Egypt:4,'South Africa':4,Scotland:4,Austria:4,
+  // Tier 5 (×3.0) - Underdogs
+  'Bosnia-Herzegovina':5,Panama:5,'Saudi Arabia':5,Iran:5,
+  // Tier 6 (×4.0) - Longshots
+  Haiti:6,'Curaçao':6,Iraq:6,'Cape Verde':6,Uzbekistan:6,'Congo DR':6,Tunisia:6,Qatar:6,'New Zealand':6,Jordan:6
 };
 const T_MULT = {1:1.0,2:1.3,3:1.7,4:2.2,5:3.0,6:4.0};
 const FLAGS = {
   Spain:'🇪🇸',France:'🇫🇷',Argentina:'🇦🇷',Portugal:'🇵🇹',Brazil:'🇧🇷',England:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',
   Germany:'🇩🇪',Netherlands:'🇳🇱',Morocco:'🇲🇦',Belgium:'🇧🇪',Croatia:'🇭🇷',Norway:'🇳🇴',
-  Colombia:'🇨🇴',Senegal:'🇸🇳',Japan:'🇯🇵',Turkey:'🇹🇷',USA:'🇺🇸',Uruguay:'🇺🇾',Mexico:'🇲🇽',Ecuador:'🇪🇨','South Korea':'🇰🇷',
-  Sweden:'🇸🇪',Ghana:'🇬🇭',Paraguay:'🇵🇾','Czech Republic':'🇨🇿',Algeria:'🇩🇿',Australia:'🇦🇺',Egypt:'🇪🇬',Cameroon:'🇨🇲',Romania:'🇷🇴',Poland:'🇵🇱',Serbia:'🇷🇸',China:'🇨🇳',
-  Bosnia:'🇧🇦',Panama:'🇵🇦','Saudi Arabia':'🇸🇦',Iran:'🇮🇷','South Africa':'🇿🇦','Costa Rica':'🇨🇷',
-  Haiti:'🇭🇹',Curacao:'🇨🇼',Iraq:'🇮🇶','Cape Verde':'🇨🇻',Uzbekistan:'🇺🇿','DR Congo':'🇨🇩',Tunisia:'🇹🇳',Qatar:'🇶🇦','New Zealand':'🇳🇿'
+  Colombia:'🇨🇴',Senegal:'🇸🇳',Japan:'🇯🇵','Türkiye':'🇹🇷',USA:'🇺🇸',Uruguay:'🇺🇾',Mexico:'🇲🇽',Ecuador:'🇪🇨','South Korea':'🇰🇷',Canada:'🇨🇦',Switzerland:'🇨🇭','Ivory Coast':'🇨🇮',
+  Sweden:'🇸🇪',Ghana:'🇬🇭',Paraguay:'🇵🇾','Czechia':'🇨🇿',Algeria:'🇩🇿',Australia:'🇦🇺',Egypt:'🇪🇬','South Africa':'🇿🇦',Scotland:'🏴󠁧󠁢󠁳󠁣󠁴󠁿',Austria:'🇦🇹',
+  'Bosnia-Herzegovina':'🇧🇦',Panama:'🇵🇦','Saudi Arabia':'🇸🇦',Iran:'🇮🇷',
+  Haiti:'🇭🇹','Curaçao':'🇨🇼',Iraq:'🇮🇶','Cape Verde':'🇨🇻',Uzbekistan:'🇺🇿','Congo DR':'🇨🇩',Tunisia:'🇹🇳',Qatar:'🇶🇦','New Zealand':'🇳🇿',Jordan:'🇯🇴'
 };
 
 const GROUPS = [
-  {id:'A',teams:['USA','Uruguay','Panama','Haiti']},
-  {id:'B',teams:['Spain','Senegal','Uzbekistan','DR Congo']},
-  {id:'C',teams:['France','Japan','Algeria','Cape Verde']},
-  {id:'D',teams:['Argentina','Australia','Czech Republic','South Africa']},
-  {id:'E',teams:['Brazil','Mexico','New Zealand','Ghana']},
-  {id:'F',teams:['England','Colombia','Tunisia','Egypt']},
-  {id:'G',teams:['Portugal','Iran','Cameroon','Qatar']},
-  {id:'H',teams:['Germany','Turkey','Sweden','Saudi Arabia']},
-  {id:'I',teams:['Netherlands','Croatia','Bosnia','Iraq']},
-  {id:'J',teams:['Belgium','Ecuador','South Korea','Curacao']},
-  {id:'K',teams:['Morocco','Norway','Paraguay','Costa Rica']},
-  {id:'L',teams:['China','Poland','Romania','Serbia']}
+  {id:'A',teams:['Mexico','South Africa','South Korea','Czechia']},
+  {id:'B',teams:['Canada','Bosnia-Herzegovina','Qatar','Switzerland']},
+  {id:'C',teams:['Brazil','Morocco','Haiti','Scotland']},
+  {id:'D',teams:['USA','Paraguay','Australia','Türkiye']},
+  {id:'E',teams:['Germany','Curaçao','Ivory Coast','Ecuador']},
+  {id:'F',teams:['Netherlands','Japan','Sweden','Tunisia']},
+  {id:'G',teams:['Belgium','Egypt','Iran','New Zealand']},
+  {id:'H',teams:['Spain','Cape Verde','Saudi Arabia','Uruguay']},
+  {id:'I',teams:['France','Senegal','Iraq','Norway']},
+  {id:'J',teams:['Argentina','Algeria','Austria','Jordan']},
+  {id:'K',teams:['Portugal','Congo DR','Uzbekistan','Colombia']},
+  {id:'L',teams:['England','Croatia','Ghana','Panama']}
 ];
 
 // Round of 32 matchup definitions using slot notation
