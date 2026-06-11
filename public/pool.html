@@ -272,8 +272,38 @@ input,select,textarea{font-family:'Outfit',sans-serif}
   border-radius:20px;padding:4px 13px;font-size:.78rem;font-weight:700;color:var(--blue);margin-bottom:13px
 }
 .third-teams{display:flex;flex-wrap:wrap;gap:8px}
+.third-groups-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+.third-group-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.third-group-title {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-3);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 4px;
+  margin-bottom: 2px;
+}
+.third-group-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 .third-chip{
-  display:flex;align-items:center;gap:6px;background:var(--bg-2);border:1px solid var(--border);
+  display:flex;align-items:center;gap:6px;background:var(--bg-3);border:1px solid var(--border);
   border-radius:8px;padding:7px 12px;cursor:pointer;transition:all .18s;font-size:.83rem;font-weight:500
 }
 .third-chip:hover{border-color:var(--blue)}
@@ -573,7 +603,7 @@ input,select,textarea{font-family:'Outfit',sans-serif}
   <div class="section-header">
     <div>
       <div class="section-title">Group Stage <span>Picks</span></div>
-      <div class="section-sub">Select 1st and 2nd place for each group. Then pick 8 of 12 third-place qualifiers.</div>
+      <div class="section-sub">Select 1st and 2nd place for each group. Then pick 8 third-place qualifiers.</div>
     </div>
     <div class="section-actions">
       <button class="btn btn-secondary btn-sm" onclick="clearGroupPicks()">🗑 Clear</button>
@@ -607,7 +637,7 @@ input,select,textarea{font-family:'Outfit',sans-serif}
   <!-- 3rd Place -->
   <div class="third-section">
     <h3>🥉 Third-Place Qualifiers</h3>
-    <p class="desc">8 of 12 group third-place finishers advance to the Round of 32. Select exactly 8 from the teams below (auto-populated once group picks are complete).</p>
+    <p class="desc">8 of the 24 unpicked teams advance as third-place qualifiers to the Round of 32. Select exactly 8 from the groups below (auto-populated once group picks are complete).</p>
     <div class="third-count" id="third-count">0 / 8 selected</div>
     <div class="third-teams" id="third-teams">
       <div class="third-empty">Complete all group picks above to see available third-place teams.</div>
@@ -1125,6 +1155,16 @@ function setGrpPick(gId, team, pos) {
     if (gp.second === team) delete gp.second;
     else { if (gp.first === team) delete gp.first; gp.second = team; }
   }
+  if (p.thirdPicks) {
+    p.thirdPicks = p.thirdPicks.filter(t => {
+      const groupOfTeam = GROUPS.find(g => g.teams.includes(t));
+      if (groupOfTeam) {
+        const ggp = p.groupPicks[groupOfTeam.id] || {};
+        return ggp.first !== t && ggp.second !== t;
+      }
+      return true;
+    });
+  }
   saveState();
   renderGroups();
   updateHeader();
@@ -1148,21 +1188,32 @@ function renderThirdSection() {
   }
 
   const maxed = sel.length >= 8;
-  // For each group, pick the highest-tier team that's not 1st or 2nd
-  const thirds = GROUPS.map(g => {
+  
+  let html = '<div class="third-groups-grid">';
+  GROUPS.forEach(g => {
     const gp = p.groupPicks[g.id] || {};
     const avail = g.teams.filter(t => t !== gp.first && t !== gp.second);
-    avail.sort((a,b) => tier(a) - tier(b)); // best tier first
-    return {group: g.id, team: avail[0]||null};
-  }).filter(x => x.team);
-
-  let html = '';
-  thirds.forEach(({group,team}) => {
-    const isSel = sel.includes(team);
-    const cls = isSel ? 'third-chip sel' : (maxed && !isSel ? 'third-chip maxed' : 'third-chip');
-    html += `<div class="${cls}" onclick="toggleThird('${esc(team)}')">${fl(team)} ${esc(team)} <span class="text-xs text-faint">(G${group})</span> ${tierBadge(team)}</div>`;
+    
+    html += `
+      <div class="third-group-card">
+        <div class="third-group-title">Group ${g.id}</div>
+        <div class="third-group-chips">
+    `;
+    
+    avail.forEach(team => {
+      const isSel = sel.includes(team);
+      const cls = isSel ? 'third-chip sel' : (maxed && !isSel ? 'third-chip maxed' : 'third-chip');
+      html += `<div class="${cls}" onclick="toggleThird('${esc(team)}')">${fl(team)} ${esc(team)} ${tierBadge(team)}</div>`;
+    });
+    
+    html += `
+        </div>
+      </div>
+    `;
   });
-  teamsEl.innerHTML = html || '<div class="third-empty">No third-place teams available.</div>';
+  html += '</div>';
+  
+  teamsEl.innerHTML = html;
 }
 
 function toggleThird(team) {
