@@ -864,22 +864,22 @@ const GROUPS = [
 
 // Round of 32 matchup definitions using slot notation
 const R32 = [
-  {id:'m1', a:'A1',b:'C2',lbl:'R32 · Match 1'},
-  {id:'m2', a:'B1',b:'D2',lbl:'R32 · Match 2'},
-  {id:'m3', a:'C1',b:'A2',lbl:'R32 · Match 3'},
-  {id:'m4', a:'D1',b:'B2',lbl:'R32 · Match 4'},
-  {id:'m5', a:'E1',b:'G2',lbl:'R32 · Match 5'},
-  {id:'m6', a:'F1',b:'H2',lbl:'R32 · Match 6'},
-  {id:'m7', a:'G1',b:'E2',lbl:'R32 · Match 7'},
-  {id:'m8', a:'H1',b:'F2',lbl:'R32 · Match 8'},
-  {id:'m9', a:'I1',b:'K2',lbl:'R32 · Match 9'},
-  {id:'m10',a:'J1',b:'L2',lbl:'R32 · Match 10'},
-  {id:'m11',a:'K1',b:'I2',lbl:'R32 · Match 11'},
-  {id:'m12',a:'L1',b:'J2',lbl:'R32 · Match 12'},
-  {id:'m13',a:'3rd-1',b:'3rd-2',lbl:'R32 · Match 13'},
-  {id:'m14',a:'3rd-3',b:'3rd-4',lbl:'R32 · Match 14'},
-  {id:'m15',a:'3rd-5',b:'3rd-6',lbl:'R32 · Match 15'},
-  {id:'m16',a:'3rd-7',b:'3rd-8',lbl:'R32 · Match 16'}
+  {id:'m1', a:'A1',b:'3P8',lbl:'R32 · Match 1'},
+  {id:'m2', a:'B1',b:'3P7',lbl:'R32 · Match 2'},
+  {id:'m3', a:'C1',b:'L2',lbl:'R32 · Match 3'},
+  {id:'m4', a:'D1',b:'3P6',lbl:'R32 · Match 4'},
+  {id:'m5', a:'E1',b:'3P5',lbl:'R32 · Match 5'},
+  {id:'m6', a:'F1',b:'K2',lbl:'R32 · Match 6'},
+  {id:'m7', a:'G1',b:'3P4',lbl:'R32 · Match 7'},
+  {id:'m8', a:'H1',b:'3P3',lbl:'R32 · Match 8'},
+  {id:'m9', a:'I1',b:'J2',lbl:'R32 · Match 9'},
+  {id:'m10',a:'J1',b:'3P2',lbl:'R32 · Match 10'},
+  {id:'m11',a:'K1',b:'3P1',lbl:'R32 · Match 11'},
+  {id:'m12',a:'L1',b:'I2',lbl:'R32 · Match 12'},
+  {id:'m13',a:'A2',b:'H2',lbl:'R32 · Match 13'},
+  {id:'m14',a:'B2',b:'G2',lbl:'R32 · Match 14'},
+  {id:'m15',a:'C2',b:'F2',lbl:'R32 · Match 15'},
+  {id:'m16',a:'D2',b:'E2',lbl:'R32 · Match 16'}
 ];
 const R16 = [
   {id:'r16a',a:'W:m1', b:'W:m2', lbl:'R16 · Match 1'},
@@ -1419,8 +1419,8 @@ function resolveSlot(slot, p) {
     return grpM[2]==='1' ? (gp.first||null) : (gp.second||null);
   }
 
-  // 3rd place: "3rd-1" through "3rd-8"
-  const thirdM = slot.match(/^3rd-(\d+)$/);
+  // 3rd place: "3rd-1" through "3rd-8" or "3P1" through "3P8"
+  const thirdM = slot.match(/^(?:3rd-|3P)(\d+)$/);
   if (thirdM) {
     return (p.thirdPicks||[])[parseInt(thirdM[1])-1] || null;
   }
