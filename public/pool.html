@@ -259,6 +259,7 @@ input,select,textarea{font-family:'Outfit',sans-serif}
 .pick-btn:hover{border-color:var(--text-2);color:var(--text-2)}
 .pick-btn.sel-1st{background:rgba(245,158,11,.18);border-color:var(--gold);color:var(--gold)}
 .pick-btn.sel-2nd{background:rgba(148,163,184,.18);border-color:var(--t2);color:var(--t2)}
+.pick-btn.sel-3rd{background:rgba(59,130,246,.18);border-color:var(--blue);color:var(--blue-bright)}
 
 /* 3rd place section */
 .third-section{
@@ -271,44 +272,76 @@ input,select,textarea{font-family:'Outfit',sans-serif}
   display:inline-flex;align-items:center;background:var(--bg-3);border:1px solid var(--border-bright);
   border-radius:20px;padding:4px 13px;font-size:.78rem;font-weight:700;color:var(--blue);margin-bottom:13px
 }
-.third-teams{display:flex;flex-wrap:wrap;gap:8px}
-.third-groups-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 12px;
-  margin-top: 14px;
-}
-.third-group-card {
-  background: var(--bg-2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 12px;
+.third-rank-list {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  margin-top: 14px;
+  max-width: 600px;
 }
-.third-group-title {
-  font-size: 0.72rem;
+.third-rank-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  transition: transform 0.2s, background-color 0.2s;
+  user-select: none;
+}
+.third-rank-item.advancing {
+  border-left: 4px solid var(--blue);
+}
+.third-rank-item.eliminated {
+  border-left: 4px solid var(--text-3);
+  opacity: 0.7;
+}
+.third-rank-item.dragging {
+  opacity: 0.4;
+  background: var(--bg-3) !important;
+  border: 1px dashed var(--blue) !important;
+}
+.rank-num {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-2);
+  min-width: 24px;
+}
+.team-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+.status-badge {
+  font-size: 0.65rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  letter-spacing: 0.5px;
+}
+.status-badge.adv {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--blue-bright);
+}
+.status-badge.elim {
+  background: rgba(255, 255, 255, 0.05);
   color: var(--text-3);
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 4px;
-  margin-bottom: 2px;
 }
-.third-group-chips {
+.drag-handle {
+  cursor: grab;
+  color: var(--text-3);
+  font-size: 1.1rem;
+  padding-right: 6px;
+  user-select: none;
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  align-items: center;
 }
-.third-chip{
-  display:flex;align-items:center;gap:6px;background:var(--bg-3);border:1px solid var(--border);
-  border-radius:8px;padding:7px 12px;cursor:pointer;transition:all .18s;font-size:.83rem;font-weight:500
+.drag-handle:active {
+  cursor: grabbing;
 }
-.third-chip:hover{border-color:var(--blue)}
-.third-chip.sel{background:rgba(59,130,246,.13);border-color:var(--blue);color:var(--blue-bright)}
-.third-chip.maxed:not(.sel){opacity:.35;pointer-events:none;cursor:not-allowed}
 .third-empty{font-size:.83rem;color:var(--text-3);padding:8px}
 
 /* ===== BRACKET ===== */
@@ -1193,21 +1226,86 @@ function syncThirdPicks(p) {
   });
 }
 
-function moveThird(idx, dir) {
+function updateThirdPicksFromDOM() {
+  const listItems = document.querySelectorAll('.third-rank-item');
+  const newOrder = [];
+  listItems.forEach(el => {
+    newOrder.push(el.getAttribute('data-team'));
+  });
+  
   const p = pd();
-  if (!p.thirdPicks) return;
-  const newIdx = idx + dir;
-  if (newIdx < 0 || newIdx >= p.thirdPicks.length) return;
-  
-  const temp = p.thirdPicks[idx];
-  p.thirdPicks[idx] = p.thirdPicks[newIdx];
-  p.thirdPicks[newIdx] = temp;
-  
+  p.thirdPicks = newOrder;
   saveState();
   renderThirdSection();
   updateHeader();
   if (document.getElementById('view-bracket').classList.contains('active')) {
     renderBracket();
+  }
+}
+
+let dragSourceEl = null;
+
+function handleDragStart(e) {
+  dragSourceEl = this;
+  this.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+}
+
+function handleDragOver(e) {
+  if (e.preventDefault) {
+    e.preventDefault();
+  }
+  const rect = this.getBoundingClientRect();
+  const relY = e.clientY - rect.top;
+  const middleY = rect.height / 2;
+  
+  const container = document.querySelector('.third-rank-list');
+  if (dragSourceEl !== this) {
+    if (relY < middleY) {
+      container.insertBefore(dragSourceEl, this);
+    } else {
+      container.insertBefore(dragSourceEl, this.nextSibling);
+    }
+  }
+  return false;
+}
+
+function handleDragEnd(e) {
+  this.classList.remove('dragging');
+  updateThirdPicksFromDOM();
+}
+
+let touchSourceEl = null;
+
+function handleTouchStart(e) {
+  touchSourceEl = this;
+  this.classList.add('dragging');
+}
+
+function handleTouchMove(e) {
+  const touchY = e.touches[0].clientY;
+  const listItems = document.querySelectorAll('.third-rank-item');
+  const container = document.querySelector('.third-rank-list');
+  
+  listItems.forEach(el => {
+    if (el === touchSourceEl) return;
+    const rect = el.getBoundingClientRect();
+    if (touchY >= rect.top && touchY <= rect.bottom) {
+      const middleY = rect.top + rect.height / 2;
+      if (touchY < middleY) {
+        container.insertBefore(touchSourceEl, el);
+      } else {
+        container.insertBefore(touchSourceEl, el.nextSibling);
+      }
+    }
+  });
+}
+
+function handleTouchEnd(e) {
+  if (touchSourceEl) {
+    touchSourceEl.classList.remove('dragging');
+    touchSourceEl = null;
+    updateThirdPicksFromDOM();
   }
 }
 
@@ -1252,11 +1350,9 @@ function renderThirdSection() {
     const itemCls = isAdvancing ? 'third-rank-item advancing' : 'third-rank-item eliminated';
     const statusTxt = isAdvancing ? `<span class="status-badge adv">Advancing (3P${rank})</span>` : `<span class="status-badge elim">Eliminated</span>`;
     
-    const upDisabled = idx === 0 ? ' disabled' : '';
-    const downDisabled = idx === sel.length - 1 ? ' disabled' : '';
-
     html += `
-      <div class="${itemCls}">
+      <div class="${itemCls}" draggable="true" data-idx="${idx}" data-team="${esc(team)}">
+        <div class="drag-handle">☰</div>
         <div class="rank-num">${rank}</div>
         <div class="team-info">
           <span class="team-flag" style="font-size:1.15rem">${fl(team)}</span>
@@ -1264,16 +1360,23 @@ function renderThirdSection() {
           ${tierBadge(team)}
         </div>
         ${statusTxt}
-        <div class="rank-btns" style="margin-left:12px">
-          <button class="rank-btn"${upDisabled} onclick="moveThird(${idx}, -1)">▲</button>
-          <button class="rank-btn"${downDisabled} onclick="moveThird(${idx}, 1)">▼</button>
-        </div>
       </div>
     `;
   });
   html += '</div>';
   
   teamsEl.innerHTML = html;
+
+  const items = teamsEl.querySelectorAll('.third-rank-item');
+  items.forEach(item => {
+    item.addEventListener('dragstart', handleDragStart);
+    item.addEventListener('dragover', handleDragOver);
+    item.addEventListener('dragend', handleDragEnd);
+    
+    item.addEventListener('touchstart', handleTouchStart, { passive: true });
+    item.addEventListener('touchmove', handleTouchMove, { passive: false });
+    item.addEventListener('touchend', handleTouchEnd, { passive: true });
+  });
 }
 
 function clearGroupPicks() {
