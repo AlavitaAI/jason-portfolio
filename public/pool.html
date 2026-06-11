@@ -1457,6 +1457,30 @@ async function pullFromCentral() {
     let hasNewLocal = false;
     
     if (remote.players) {
+      // 1. Delete local players that were finalized but are now missing from the server (pruned centrally)
+      const localNames = Object.keys(state.players || {});
+      const creds = JSON.parse(localStorage.getItem('wc2026_credentials') || '{}');
+      
+      localNames.forEach(name => {
+        const p = state.players[name];
+        const hasPass = p && (p.hasPasscode || (p.passcode && p.passcode.trim().length >= 4));
+        
+        if (hasPass && !remote.players[name]) {
+          delete state.players[name];
+          if (creds[name]) delete creds[name];
+          if (state.myPlayers) {
+            state.myPlayers = state.myPlayers.filter(n => n !== name);
+          }
+          if (state.currentPlayer === name) {
+            state.currentPlayer = null;
+          }
+        }
+      });
+      
+      localStorage.setItem('wc2026_credentials', JSON.stringify(creds));
+      localStorage.setItem('wc2026_my_players', JSON.stringify(state.myPlayers || []));
+
+      // 2. Add/Update players from the server
       Object.keys(remote.players).forEach(name => {
         if (name !== state.currentPlayer) {
           state.players[name] = remote.players[name];
@@ -1464,9 +1488,14 @@ async function pullFromCentral() {
       });
     }
     
+    // 3. Check if we have unsynced finalized local players to push
     if (state.players) {
       Object.keys(state.players).forEach(name => {
-        if (!remote.players || !remote.players[name]) {
+        const p = state.players[name];
+        const creds = JSON.parse(localStorage.getItem('wc2026_credentials') || '{}');
+        const passcode = creds[name] || (p && p.passcode) || '';
+        
+        if (passcode.trim().length >= 4 && (!remote.players || !remote.players[name])) {
           hasNewLocal = true;
         }
       });
@@ -1478,6 +1507,7 @@ async function pullFromCentral() {
     
     localStorage.setItem(STORAGE_KEY, JSON.stringify({players:state.players, adminResults:state.adminResults}));
     restoreLocalPasscodes();
+    updateHeader();
     
     if (hasNewLocal) {
       await pushToCentral();
@@ -2515,7 +2545,10 @@ function renderScore() {
    LEADERBOARD
 =========================================================== */
 function renderLeaderboard() {
-  const names = Object.keys(state.players);
+  const names = Object.keys(state.players).filter(n => {
+    const p = state.players[n];
+    return p && (p.hasPasscode || (p.passcode && p.passcode.trim().length >= 4));
+  });
   const el = document.getElementById('lb-body');
   if (!names.length) {
     el.innerHTML = '<div class="lb-empty"><div class="lb-empty-icon">🏆</div><p>No saved brackets yet. Be the first!</p></div>';
