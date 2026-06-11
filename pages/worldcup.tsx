@@ -9,7 +9,7 @@ export default function WorldCup() {
       </Head>
       <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 9999, background: '#0f1117' }}>
         <iframe
-          src="/worldcup.html"
+          src="/pool.html"
           style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
           title="World Cup 2026 Prediction Pool"
         />
