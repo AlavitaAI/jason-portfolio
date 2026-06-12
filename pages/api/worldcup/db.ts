@@ -85,8 +85,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(200).json({ success: storedPass === passcode });
       }
 
-      // Enforce lock deadline: June 11, 2026, 3:00 PM EST (UTC-4)
-      const LOCK_TIME = new Date('2026-06-11T15:00:00-04:00').getTime();
+      // Enforce lock deadline: June 13, 2026, 12:00 PM EST (UTC-4)
+      const LOCK_TIME = new Date('2026-06-13T12:00:00-04:00').getTime();
       const isLocked = Date.now() > LOCK_TIME;
       const isAdmin = adminPassword === 'admin2026';
 
