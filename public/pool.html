@@ -2472,19 +2472,21 @@ function calcScore(name) {
     if (actualThird.includes(team)) total += 10 * mult(team);
   });
 
-  // Knockout rounds
+  // Knockout rounds: round-based scoring (not match-id based)
   const koRes = ar.knockoutResults || {};
+  const actualWinnersByRound = { R32: [], R16: [], QF: [], SF: [], '3rd': [], Final: [] };
+  Object.entries(koRes).forEach(([mId, winner]) => {
+    if (winner) actualWinnersByRound[getRound(mId)].push(winner);
+  });
+
   ALL_MATCHES.forEach(match => {
     const pick = (p.bracketPicks||{})[match.id];
-    const actual = koRes[match.id];
-    if (pick && actual && pick === actual) {
-      const rnd = match.id === 'final' ? 'Final' : match.id === 'third' ? '3rd' :
-        match.id.startsWith('m') ? 'R32' :
-        match.id.startsWith('r16') ? 'R16' :
-        match.id.startsWith('qf') ? 'QF' :
-        match.id.startsWith('sf') ? 'SF' : 'R32';
-      total += (ROUND_PTS[rnd]||5) * mult(pick);
-      if (match.id === 'final') total += ROUND_PTS.Champ * mult(pick); // champion bonus
+    if (pick) {
+      const rnd = getRound(match.id);
+      if (actualWinnersByRound[rnd].includes(pick)) {
+        total += (ROUND_PTS[rnd]||5) * mult(pick);
+        if (match.id === 'final') total += ROUND_PTS.Champ * mult(pick); // champion bonus
+      }
     }
   });
 
@@ -2590,23 +2592,61 @@ function renderScore() {
   // Knockout rows by round
   const roundOrder = ['R32','R16','QF','SF','3rd','Final'];
   const roundNames = {R32:'Round of 32',R16:'Round of 16',QF:'Quarterfinals',SF:'Semifinals','3rd':'3rd Place',Final:'Final'};
+  const roundSizes = {R32:16, R16:8, QF:4, SF:2, '3rd':1, Final:1};
   let curRnd = '';
+
+  const actualWinnersByRound = { R32: [], R16: [], QF: [], SF: [], '3rd': [], Final: [] };
+  Object.entries(koRes).forEach(([mId, winner]) => {
+    if (winner) actualWinnersByRound[getRound(mId)].push(winner);
+  });
+
+  const adminLosers = new Set();
+  ALL_MATCHES.forEach(m => {
+    const winner = koRes[m.id];
+    if (winner) {
+      const ta = resolveSlot(m.a, { groupPicks: ar.groupResults, thirdPicks: ar.thirdQualifiers, bracketPicks: koRes });
+      const tb = resolveSlot(m.b, { groupPicks: ar.groupResults, thirdPicks: ar.thirdQualifiers, bracketPicks: koRes });
+      if (ta && ta !== winner) adminLosers.add(ta);
+      if (tb && tb !== winner) adminLosers.add(tb);
+    }
+  });
+
   [...ALL_MATCHES].sort((a,b)=>roundOrder.indexOf(getRound(a.id))-roundOrder.indexOf(getRound(b.id))).forEach(m => {
     const rnd = getRound(m.id);
     if (rnd !== curRnd) { curRnd=rnd; rows+=`<div class="bt-section">⚽ ${roundNames[rnd]||rnd}</div>`; }
     const pick = (p.bracketPicks||{})[m.id];
     if (!pick) return;
-    const actual = koRes[m.id];
+    
     const base = ROUND_PTS[rnd]||5;
     const max = Math.round(base*mult(pick)) + (m.id==='final'?Math.round(ROUND_PTS.Champ*mult(pick)):0);
     let pts=0, res='—', ptsCls='pend';
-    if (actual) {
-      if (actual===pick) {
-        pts=Math.round(base*mult(pick));
-        if (m.id==='final') pts+=Math.round(ROUND_PTS.Champ*mult(pick));
-        res='✓'; ptsCls='pos';
-      } else { res='✗'; ptsCls='neg'; }
+
+    if (actualWinnersByRound[rnd].includes(pick)) {
+      pts = Math.round(base*mult(pick));
+      if (m.id === 'final') pts += Math.round(ROUND_PTS.Champ*mult(pick));
+      res = '✓'; ptsCls = 'pos';
+    } else {
+      let eliminated = false;
+      const grpsDone = Object.keys(ar.groupResults||{}).length === 12 && (ar.thirdQualifiers||[]).length >= 8;
+      if (grpsDone) {
+        let advanced = false;
+        Object.values(ar.groupResults||{}).forEach(g => {
+          if (g.first === pick || g.second === pick) advanced = true;
+        });
+        if ((ar.thirdQualifiers||[]).includes(pick)) advanced = true;
+        if (!advanced) eliminated = true;
+      }
+      if (actualWinnersByRound[rnd].length === roundSizes[rnd]) eliminated = true;
+      if (adminLosers.has(pick) && rnd !== '3rd') eliminated = true;
+      const prevRounds = roundOrder.slice(0, roundOrder.indexOf(rnd));
+      for (const pr of prevRounds) {
+        if (rnd !== '3rd' && actualWinnersByRound[pr].length === roundSizes[pr] && !actualWinnersByRound[pr].includes(pick)) {
+          eliminated = true;
+        }
+      }
+      if (eliminated) { res = '✗'; ptsCls = 'neg'; }
     }
+
     rows += `<div class="bt-row"><div class="bt-row-label">${fl(pick)} ${esc(pick)} <span class="text-faint text-xs">${m.lbl}</span></div><div class="bt-row-result">${res}</div><div class="bt-row-pts ${ptsCls}">${pts}</div><div class="bt-row-max">${max}</div></div>`;
   });
 
