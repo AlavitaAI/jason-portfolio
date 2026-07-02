@@ -1686,12 +1686,12 @@ function startPlayer() {
   const name = document.getElementById('player-name-input').value.trim();
   if (!name) { showToast('Please enter your name!','error'); return; }
   
-  if (isLocked()) {
+  const isNew = !state.players[name];
+  if (isLocked() && isNew) {
     showToast('Submissions are closed. New brackets cannot be created.','error');
     return;
   }
 
-  const isNew = !state.players[name];
   if (isNew) {
     prompt2(`Create Passcode for "${name}"`, `Choose a 4-digit passcode to secure your bracket so others cannot edit it from their devices.`, async (chosenPasscode) => {
       if (!chosenPasscode || chosenPasscode.trim().length < 4) {
@@ -1786,12 +1786,7 @@ async function loadPlayer(name) {
   const p = state.players[name];
   if (!p) return;
 
-  if (isLocked()) {
-    state.viewedPlayer = name;
-    go('bracket');
-    showToast(`Submissions closed. Viewing ${name}'s bracket (Read-Only).`,'info');
-    return;
-  }
+
 
   const hasPass = p.hasPasscode || !!p.passcode;
   const creds = JSON.parse(localStorage.getItem('wc2026_credentials') || '{}');
@@ -1878,10 +1873,7 @@ function exportPicks() {
 }
 
 function importPicks(e) {
-  if (isLocked()) {
-    showToast('Submissions are closed. Imports are disabled.','error');
-    return;
-  }
+
   const file = e.target.files[0];
   if (!file) return;
   const reader = new FileReader();
