@@ -50,6 +50,20 @@ export default function DraftBoard() {
   const [search, setSearch] = useState("");
   const [posFilter, setPosFilter] = useState("ALL");
   const [isLoaded, setIsLoaded] = useState(false);
+  const [timeLeft, setTimeLeft] = useState<number>(0);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+
+  // Timer logic
+  useEffect(() => {
+    if (!isTimerRunning || timeLeft <= 0) return;
+    const t = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1) setIsTimerRunning(false);
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(t);
+  }, [isTimerRunning, timeLeft]);
 
   useEffect(() => {
     fetch("/players.json")
@@ -97,7 +111,32 @@ export default function DraftBoard() {
     while (next < TOTAL_PICKS && newState[next]) {
       next++;
     }
-    setActivePick(Math.min(next, TOTAL_PICKS - 1));
+    const finalNext = Math.min(next, TOTAL_PICKS - 1);
+    setActivePick(finalNext);
+
+    // Start timer for the new pick
+    const nextRound = Math.floor(finalNext / 10) + 1;
+    let newTime = 35;
+    if (nextRound <= 3) newTime = 90;
+    else if (nextRound <= 10) newTime = 60;
+    setTimeLeft(newTime);
+    setIsTimerRunning(true);
+  };
+
+  const handleWriteIn = () => {
+    const name = prompt("Enter custom player name:");
+    if (!name) return;
+    const pos = prompt("Enter position (QB, RB, WR, TE, K, DEF):", "WR");
+    if (!pos) return;
+    const team = prompt("Enter team abbreviation:", "FA");
+    
+    draftPlayer({
+      id: 'custom-' + Date.now(),
+      name: name.trim(),
+      pos: pos.trim().toUpperCase(),
+      team: team ? team.trim().toUpperCase() : "FA",
+      rank: 9999
+    });
   };
 
   const removePick = (pickIndex: number) => {
@@ -233,15 +272,40 @@ export default function DraftBoard() {
       
       <div className="flex flex-col h-screen bg-[#f8f9fa] font-sans overflow-hidden">
         
+        {/* Huge Title */}
+        <div className="bg-[#ED1D24] text-white text-center py-4 md:py-6 text-3xl md:text-5xl font-black uppercase tracking-widest shadow-lg border-b-4 border-black relative z-20">
+          Teenage Mutant Ninja Bortles 2026
+        </div>
+
         {/* Header - Spider-Man aesthetic (Red/Blue accents) */}
-        <header className="flex-none bg-[#0476F2] text-white p-4 shadow-md flex justify-between items-center relative overflow-hidden">
+        <header className="flex-none bg-[#0476F2] text-white p-3 shadow-md flex justify-between items-center relative overflow-hidden border-b-2 border-black">
           <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }}></div>
-          <h1 className="text-2xl font-black italic tracking-wider drop-shadow-lg relative z-10">2026 DRAFT BOARD</h1>
-          <div className="flex gap-4 relative z-10">
-            <div className="bg-white/20 px-4 py-1 rounded text-sm font-bold flex items-center">
+          
+          <h1 className="text-xl md:text-2xl font-black italic tracking-wider drop-shadow-lg relative z-10 flex items-center">
+            {/* Spider-Man Face SVG */}
+            <svg width="28" height="28" viewBox="0 0 100 100" className="inline-block mr-3">
+              <ellipse cx="50" cy="50" rx="45" ry="50" fill="#ED1D24" stroke="#000" strokeWidth="4"/>
+              <path d="M 20 40 Q 40 20 45 50 Q 30 55 20 40" fill="#FFF" stroke="#000" strokeWidth="3"/>
+              <path d="M 80 40 Q 60 20 55 50 Q 70 55 80 40" fill="#FFF" stroke="#000" strokeWidth="3"/>
+            </svg>
+            2026 DRAFT BOARD
+            <svg width="28" height="28" viewBox="0 0 100 100" className="inline-block ml-3">
+              <ellipse cx="50" cy="50" rx="45" ry="50" fill="#ED1D24" stroke="#000" strokeWidth="4"/>
+              <path d="M 20 40 Q 40 20 45 50 Q 30 55 20 40" fill="#FFF" stroke="#000" strokeWidth="3"/>
+              <path d="M 80 40 Q 60 20 55 50 Q 70 55 80 40" fill="#FFF" stroke="#000" strokeWidth="3"/>
+            </svg>
+          </h1>
+          
+          <div className="flex gap-4 relative z-10 items-center">
+            {/* Timer */}
+            <div className={`text-2xl md:text-3xl font-mono font-bold px-4 py-1 rounded bg-black/30 shadow-inner ${timeLeft <= 10 && isTimerRunning ? 'text-red-400 animate-pulse' : 'text-white'}`}>
+              {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
+            </div>
+
+            <div className="bg-white/20 px-4 py-2 rounded text-sm font-bold flex items-center shadow-sm">
               Pick {activePick + 1} / {TOTAL_PICKS}
             </div>
-            <button onClick={clearBoard} className="bg-red-600 hover:bg-red-700 px-4 py-1 rounded font-bold shadow transition-colors text-sm">
+            <button onClick={clearBoard} className="bg-[#ED1D24] hover:bg-red-700 border-2 border-black px-4 py-1 rounded font-bold shadow-md transition-colors text-sm">
               Clear Board
             </button>
           </div>
@@ -279,6 +343,12 @@ export default function DraftBoard() {
                   </button>
                 ))}
               </div>
+              <button 
+                onClick={handleWriteIn}
+                className="mt-2 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-1.5 px-2 rounded text-xs shadow-sm"
+              >
+                + Write-in Player
+              </button>
             </div>
 
             <div className="flex-1 overflow-y-auto p-2 space-y-1">
