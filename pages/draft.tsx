@@ -52,6 +52,7 @@ export default function DraftBoard() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [timeLeft, setTimeLeft] = useState<number>(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [selectedTeamView, setSelectedTeamView] = useState<string | null>(null);
 
   // Timer logic
   useEffect(() => {
@@ -156,6 +157,7 @@ export default function DraftBoard() {
 
   const filteredPlayers = useMemo(() => {
     return players.filter((p) => {
+      if (posFilter === "ALL" && p.pos === "DEF") return false;
       const matchPos = posFilter === "ALL" || p.pos === posFilter;
       const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
       // Filter out drafted players
@@ -252,7 +254,11 @@ export default function DraftBoard() {
 
       cols.push(
         <div key={teamIdx} className="flex-1 flex flex-col min-w-[120px]">
-          <div className="bg-[#ED1D24] text-white p-2 text-center text-xs md:text-sm font-bold border border-[#b81218] shadow-inner h-14 flex items-center justify-center leading-tight relative overflow-hidden">
+          <div 
+            onClick={() => setSelectedTeamView(TEAMS[teamIdx])}
+            className="bg-[#ED1D24] text-white p-2 text-center text-xs md:text-sm font-bold border border-[#b81218] shadow-inner h-14 flex items-center justify-center leading-tight relative overflow-hidden cursor-pointer hover:brightness-110 transition-all"
+            title="Click to view full roster"
+          >
              {/* Subtle web pattern for Spiderman theme */}
             <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at center, transparent 30%, black 150%), repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px)'}}></div>
             <span className="relative z-10 drop-shadow-md">{TEAMS[teamIdx]}</span>
@@ -397,6 +403,60 @@ export default function DraftBoard() {
 
         </div>
       </div>
+
+      {/* Team Roster Viewer Modal */}
+      {selectedTeamView && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-full">
+            <div className="bg-[#0476F2] p-4 flex justify-between items-center text-white border-b-4 border-black relative overflow-hidden">
+              <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: "url('data:image/svg+xml,%3Csvg width=\"50\" height=\"50\" viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cellipse cx=\"50\" cy=\"50\" rx=\"45\" ry=\"50\" fill=\"%23ED1D24\" stroke=\"%23000\" stroke-width=\"4\"/%3E%3Cpath d=\"M 50 0 L 50 100 M 50 50 L 10 10 M 50 50 L 90 10 M 50 50 L 5 45 M 50 50 L 95 45 M 50 50 L 15 85 M 50 50 L 85 85\" stroke=\"%23000\" stroke-width=\"2\" opacity=\"0.7\"/%3E%3Cpath d=\"M 20 25 Q 50 40 80 25 M 10 50 Q 50 70 90 50 M 25 75 Q 50 90 75 75\" fill=\"none\" stroke=\"%23000\" stroke-width=\"2\" opacity=\"0.7\"/%3E%3Cpath d=\"M 20 40 Q 40 20 45 50 Q 30 55 20 40 Z M 80 40 Q 60 20 55 50 Q 70 55 80 40 Z\" fill=\"%23FFF\" stroke=\"%23000\" stroke-width=\"4\"/%3E%3C/svg%3E')", backgroundSize: '40px 40px' }}></div>
+              <h2 className="text-2xl font-black italic tracking-wide relative z-10">{selectedTeamView} Roster</h2>
+              <button onClick={() => setSelectedTeamView(null)} className="font-bold text-3xl hover:text-red-300 relative z-10 leading-none">&times;</button>
+            </div>
+            <div className="p-4 overflow-y-auto">
+              {(() => {
+                const getTeamForPick = (pickIndex: number) => {
+                  const r = Math.floor(pickIndex / 10);
+                  const c = pickIndex % 10;
+                  return TEAMS[r % 2 === 1 ? 9 - c : c];
+                };
+                const teamPicks = Object.entries(draftState)
+                  .map(([pickStr, player]) => ({ pick: parseInt(pickStr), player }))
+                  .filter(({ pick }) => getTeamForPick(pick) === selectedTeamView);
+                
+                const posOrder: Record<string, number> = { QB: 1, RB: 2, WR: 3, TE: 4, K: 5, DEF: 6 };
+                teamPicks.sort((a, b) => (posOrder[a.player.pos] || 99) - (posOrder[b.player.pos] || 99));
+
+                if (teamPicks.length === 0) return <div className="text-center text-gray-500 py-8 font-bold text-xl">No players drafted yet.</div>;
+
+                return (
+                  <div className="flex flex-col gap-2">
+                    {teamPicks.map(({ pick, player }) => {
+                      const r = Math.floor(pick / 10);
+                      const c = pick % 10;
+                      const pickNumInRound = (r % 2 === 1 ? 10 - c : c + 1);
+                      return (
+                        <div key={pick} className={`flex items-center justify-between p-3 border-2 border-black rounded shadow-sm ${POS_COLORS_LIGHT[player.pos] || 'bg-gray-50'}`}>
+                          <div className="flex items-center gap-4">
+                            <span className={`w-14 text-center font-black border border-black rounded text-xs px-2 py-1 shadow-sm ${POS_COLORS[player.pos] || 'bg-gray-200'}`}>{player.pos}</span>
+                            <div>
+                              <div className="font-bold text-lg leading-tight">{player.name}</div>
+                              <div className="text-gray-600 text-sm font-semibold">{player.team}</div>
+                            </div>
+                          </div>
+                          <div className="text-xs font-bold text-gray-500 bg-white px-3 py-1.5 rounded-full shadow-inner border border-gray-300">
+                            Round {r + 1}, Pick {pickNumInRound}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })()}
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
