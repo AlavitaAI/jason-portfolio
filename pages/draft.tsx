@@ -297,20 +297,21 @@ export default function DraftBoard() {
 
         {/* Header - Spider-Man aesthetic (Red/Blue accents) */}
         <header className="flex-none bg-[#0476F2] text-white p-3 shadow-md flex justify-between items-center relative overflow-hidden border-b-2 border-black">
-          <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }}></div>
-          
-          <h1 className="text-xl md:text-2xl font-black italic tracking-wider drop-shadow-lg relative z-10 flex items-center">
+          <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: "url('data:image/svg+xml,%3Csvg width=\"50\" height=\"50\" viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cellipse cx=\"50\" cy=\"50\" rx=\"45\" ry=\"50\" fill=\"%23ED1D24\" stroke=\"%23000\" stroke-width=\"4\"/%3E%3Cpath d=\"M 50 0 L 50 100 M 50 50 L 10 10 M 50 50 L 90 10 M 50 50 L 5 45 M 50 50 L 95 45 M 50 50 L 15 85 M 50 50 L 85 85\" stroke=\"%23000\" stroke-width=\"2\" opacity=\"0.7\"/%3E%3Cpath d=\"M 20 25 Q 50 40 80 25 M 10 50 Q 50 70 90 50 M 25 75 Q 50 90 75 75\" fill=\"none\" stroke=\"%23000\" stroke-width=\"2\" opacity=\"0.7\"/%3E%3Cpath d=\"M 20 40 Q 40 20 45 50 Q 30 55 20 40 Z M 80 40 Q 60 20 55 50 Q 70 55 80 40 Z\" fill=\"%23FFF\" stroke=\"%23000\" stroke-width=\"4\"/%3E%3C/svg%3E')", backgroundSize: '40px 40px' }}></div>
+          <h1 className="text-xl md:text-2xl font-black italic tracking-wider drop-shadow-lg relative z-10 flex items-center bg-black/30 px-4 py-1 rounded-full border border-black/50 backdrop-blur-sm">
             {/* Spider-Man Face SVG */}
-            <svg width="28" height="28" viewBox="0 0 100 100" className="inline-block mr-3">
+            <svg width="32" height="32" viewBox="0 0 100 100" className="inline-block mr-3 drop-shadow-md">
               <ellipse cx="50" cy="50" rx="45" ry="50" fill="#ED1D24" stroke="#000" strokeWidth="4"/>
-              <path d="M 20 40 Q 40 20 45 50 Q 30 55 20 40" fill="#FFF" stroke="#000" strokeWidth="3"/>
-              <path d="M 80 40 Q 60 20 55 50 Q 70 55 80 40" fill="#FFF" stroke="#000" strokeWidth="3"/>
+              <path d="M 50 0 L 50 100 M 50 50 L 10 10 M 50 50 L 90 10 M 50 50 L 5 45 M 50 50 L 95 45 M 50 50 L 15 85 M 50 50 L 85 85" stroke="#000" strokeWidth="2" opacity="0.6"/>
+              <path d="M 20 25 Q 50 40 80 25 M 10 50 Q 50 70 90 50 M 25 75 Q 50 90 75 75" fill="none" stroke="#000" strokeWidth="2" opacity="0.6"/>
+              <path d="M 20 40 Q 40 20 45 50 Q 30 55 20 40 Z M 80 40 Q 60 20 55 50 Q 70 55 80 40 Z" fill="#FFF" stroke="#000" strokeWidth="4"/>
             </svg>
             2026 DRAFT BOARD
-            <svg width="28" height="28" viewBox="0 0 100 100" className="inline-block ml-3">
+            <svg width="32" height="32" viewBox="0 0 100 100" className="inline-block ml-3 drop-shadow-md">
               <ellipse cx="50" cy="50" rx="45" ry="50" fill="#ED1D24" stroke="#000" strokeWidth="4"/>
-              <path d="M 20 40 Q 40 20 45 50 Q 30 55 20 40" fill="#FFF" stroke="#000" strokeWidth="3"/>
-              <path d="M 80 40 Q 60 20 55 50 Q 70 55 80 40" fill="#FFF" stroke="#000" strokeWidth="3"/>
+              <path d="M 50 0 L 50 100 M 50 50 L 10 10 M 50 50 L 90 10 M 50 50 L 5 45 M 50 50 L 95 45 M 50 50 L 15 85 M 50 50 L 85 85" stroke="#000" strokeWidth="2" opacity="0.6"/>
+              <path d="M 20 25 Q 50 40 80 25 M 10 50 Q 50 70 90 50 M 25 75 Q 50 90 75 75" fill="none" stroke="#000" strokeWidth="2" opacity="0.6"/>
+              <path d="M 20 40 Q 40 20 45 50 Q 30 55 20 40 Z M 80 40 Q 60 20 55 50 Q 70 55 80 40 Z" fill="#FFF" stroke="#000" strokeWidth="4"/>
             </svg>
           </h1>
           
