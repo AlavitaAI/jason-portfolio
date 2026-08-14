@@ -277,33 +277,15 @@ export default function DraftBoard() {
           
           {/* Left Bortles */}
           <div className="absolute top-1/2 left-2 md:left-10 transform -translate-y-1/2 z-10 drop-shadow-xl hidden sm:block">
-            <div className="relative w-24 h-32 md:w-36 md:h-48 overflow-hidden rounded-b-3xl">
-              <img src="/bortles.png" alt="Bortles" className="absolute inset-0 w-full h-full object-cover object-top z-10" />
-              
-              {/* Half Spiderman Mask Overlay (Left side of his face) */}
-              <div className="absolute inset-0 w-1/2 bg-[#E3242B] z-20 border-r-2 border-black shadow-[inset_-5px_0_10px_rgba(0,0,0,0.5)]">
-                {/* Webbing on mask */}
-                <div className="absolute inset-0 opacity-40" style={{ backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 8px, #000 9px, #000 10px), repeating-linear-gradient(-45deg, transparent, transparent 8px, #000 9px, #000 10px)'}}></div>
-                {/* Spidey Eye */}
-                <svg viewBox="0 0 100 100" className="absolute top-[25%] left-[15%] w-[70%] h-[40%] transform -rotate-12">
-                  <path d="M 10 50 Q 50 10 90 40 Q 60 70 10 50 Z" fill="#FFF" stroke="#000" strokeWidth="6"/>
-                </svg>
-              </div>
+            <div className="relative w-32 h-40 md:w-48 md:h-56 overflow-hidden rounded-b-3xl">
+              <img src="/ninja_bortles.png" alt="Ninja Bortles" className="absolute inset-0 w-full h-full object-cover object-top z-10" />
             </div>
           </div>
           
           {/* Right Bortles */}
           <div className="absolute top-1/2 right-2 md:right-10 transform -translate-y-1/2 z-10 drop-shadow-xl hidden sm:block">
-            <div className="relative w-24 h-32 md:w-36 md:h-48 overflow-hidden rounded-b-3xl transform -scale-x-100">
-              <img src="/bortles.png" alt="Bortles" className="absolute inset-0 w-full h-full object-cover object-top z-10" />
-              
-              {/* Half Spiderman Mask Overlay */}
-              <div className="absolute inset-0 w-1/2 bg-[#E3242B] z-20 border-r-2 border-black shadow-[inset_-5px_0_10px_rgba(0,0,0,0.5)]">
-                <div className="absolute inset-0 opacity-40" style={{ backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 8px, #000 9px, #000 10px), repeating-linear-gradient(-45deg, transparent, transparent 8px, #000 9px, #000 10px)'}}></div>
-                <svg viewBox="0 0 100 100" className="absolute top-[25%] left-[15%] w-[70%] h-[40%] transform -rotate-12">
-                  <path d="M 10 50 Q 50 10 90 40 Q 60 70 10 50 Z" fill="#FFF" stroke="#000" strokeWidth="6"/>
-                </svg>
-              </div>
+            <div className="relative w-32 h-40 md:w-48 md:h-56 overflow-hidden rounded-b-3xl transform -scale-x-100">
+              <img src="/ninja_bortles.png" alt="Ninja Bortles" className="absolute inset-0 w-full h-full object-cover object-top z-10" />
             </div>
           </div>
 
