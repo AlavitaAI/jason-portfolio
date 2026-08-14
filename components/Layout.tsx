@@ -13,6 +13,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     { href: "/finance", label: "Finance" },
     { href: "/ai", label: "AI" },
     { href: "/worldcup", label: "⚽ World Cup 2026" },
+    { href: "/draft", label: "🏈 Draft Board" },
   ];
 
   return (
