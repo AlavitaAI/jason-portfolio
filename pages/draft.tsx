@@ -273,37 +273,68 @@ export default function DraftBoard() {
       <div className="flex flex-col h-screen bg-[#f8f9fa] font-sans overflow-hidden">
         
         {/* Huge Title with Intricate Spiderman Graphics */}
-        <div className="relative z-20 text-center py-6 md:py-8 shadow-2xl border-b-4 border-black overflow-hidden flex flex-col items-center justify-center bg-gradient-to-br from-[#ED1D24] to-[#91050A]">
-          {/* Webbing Background Radial/Conic Gradient Trick */}
-          <div className="absolute inset-0 opacity-50 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.6) 100%), repeating-radial-gradient(circle at center, transparent, transparent 15px, rgba(255,255,255,0.4) 16px, rgba(255,255,255,0.4) 17px), repeating-conic-gradient(from 0deg, transparent 0deg, transparent 15deg, rgba(255,255,255,0.4) 15deg, rgba(255,255,255,0.4) 15.5deg)'}}></div>
+        <div className="relative z-20 text-center py-8 shadow-2xl border-b-4 border-black overflow-hidden flex flex-col items-center justify-center bg-white" style={{ minHeight: '250px' }}>
           
-          {/* Halftone dots for comic aesthetic */}
-          <div className="absolute inset-0 opacity-20 pointer-events-none mix-blend-overlay" style={{ backgroundImage: 'radial-gradient(#000 2px, transparent 2px)', backgroundSize: '8px 8px' }}></div>
+          {/* Subtle Halftone dots for comic aesthetic in background */}
+          <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#000 2px, transparent 2px)', backgroundSize: '10px 10px' }}></div>
           
-          {/* Left Blue geometric slash */}
-          <div className="absolute top-0 left-0 w-1/4 md:w-1/3 h-full bg-[#0476F2] transform -skew-x-[20deg] origin-bottom-left shadow-[10px_0_20px_rgba(0,0,0,0.5)] border-r-8 border-black">
-             <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, #fff 11px, #fff 12px)'}}></div>
-             {/* Huge subtle spider logo on the side */}
-             <svg width="150" height="150" viewBox="0 0 100 100" className="absolute top-1/2 left-4 transform -translate-y-1/2 opacity-20 fill-black skew-x-[20deg]">
-               <ellipse cx="50" cy="50" rx="30" ry="40" />
-               <path d="M 50 10 L 10 30 L 30 50 L 10 70 L 50 90 L 90 70 L 70 50 L 90 30 Z" stroke="#000" strokeWidth="5"/>
-             </svg>
+          {/* Left Bortles */}
+          <div className="absolute top-1/2 left-2 md:left-10 transform -translate-y-1/2 z-10 drop-shadow-xl hidden sm:block">
+            <div className="relative w-24 h-32 md:w-36 md:h-48 overflow-hidden rounded-b-3xl">
+              <img src="/bortles.png" alt="Bortles" className="absolute inset-0 w-full h-full object-cover object-top z-10" />
+              
+              {/* Half Spiderman Mask Overlay (Left side of his face) */}
+              <div className="absolute inset-0 w-1/2 bg-[#E3242B] z-20 border-r-2 border-black shadow-[inset_-5px_0_10px_rgba(0,0,0,0.5)]">
+                {/* Webbing on mask */}
+                <div className="absolute inset-0 opacity-40" style={{ backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 8px, #000 9px, #000 10px), repeating-linear-gradient(-45deg, transparent, transparent 8px, #000 9px, #000 10px)'}}></div>
+                {/* Spidey Eye */}
+                <svg viewBox="0 0 100 100" className="absolute top-[25%] left-[15%] w-[70%] h-[40%] transform -rotate-12">
+                  <path d="M 10 50 Q 50 10 90 40 Q 60 70 10 50 Z" fill="#FFF" stroke="#000" strokeWidth="6"/>
+                </svg>
+              </div>
+            </div>
           </div>
           
-          {/* Right Blue geometric slash */}
-          <div className="absolute top-0 right-0 w-1/4 md:w-1/3 h-full bg-[#0476F2] transform skew-x-[20deg] origin-bottom-right shadow-[-10px_0_20px_rgba(0,0,0,0.5)] border-l-8 border-black">
-             <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'repeating-linear-gradient(-45deg, transparent, transparent 10px, #fff 11px, #fff 12px)'}}></div>
-             {/* Huge subtle spider logo on the side */}
-             <svg width="150" height="150" viewBox="0 0 100 100" className="absolute top-1/2 right-4 transform -translate-y-1/2 opacity-20 fill-black -skew-x-[20deg]">
-               <ellipse cx="50" cy="50" rx="30" ry="40" />
-               <path d="M 50 10 L 10 30 L 30 50 L 10 70 L 50 90 L 90 70 L 70 50 L 90 30 Z" stroke="#000" strokeWidth="5"/>
-             </svg>
+          {/* Right Bortles */}
+          <div className="absolute top-1/2 right-2 md:right-10 transform -translate-y-1/2 z-10 drop-shadow-xl hidden sm:block">
+            <div className="relative w-24 h-32 md:w-36 md:h-48 overflow-hidden rounded-b-3xl transform -scale-x-100">
+              <img src="/bortles.png" alt="Bortles" className="absolute inset-0 w-full h-full object-cover object-top z-10" />
+              
+              {/* Half Spiderman Mask Overlay */}
+              <div className="absolute inset-0 w-1/2 bg-[#E3242B] z-20 border-r-2 border-black shadow-[inset_-5px_0_10px_rgba(0,0,0,0.5)]">
+                <div className="absolute inset-0 opacity-40" style={{ backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 8px, #000 9px, #000 10px), repeating-linear-gradient(-45deg, transparent, transparent 8px, #000 9px, #000 10px)'}}></div>
+                <svg viewBox="0 0 100 100" className="absolute top-[25%] left-[15%] w-[70%] h-[40%] transform -rotate-12">
+                  <path d="M 10 50 Q 50 10 90 40 Q 60 70 10 50 Z" fill="#FFF" stroke="#000" strokeWidth="6"/>
+                </svg>
+              </div>
+            </div>
           </div>
 
-          <h1 className="text-4xl md:text-5xl lg:text-7xl font-black uppercase tracking-[0.1em] relative z-10 text-white transform -skew-x-[10deg] mx-4" style={{ textShadow: '5px 5px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 0 10px 20px rgba(0,0,0,0.8)'}}>
-            Teenage Mutant Ninja Bortles
-            <span className="text-[#FFE81F] block text-xl md:text-3xl tracking-widest mt-2 transform skew-x-[10deg]">2026 FANTASY DRAFT</span>
-          </h1>
+          {/* Center Titles */}
+          <div className="relative z-30 flex flex-col items-center max-w-[80%] mx-auto">
+            {/* Marvel Studios -> Carmel Road replacement */}
+            <div className="bg-[#E3242B] text-white text-xs md:text-sm font-black uppercase tracking-[0.3em] px-3 py-1 mb-2 shadow-[2px_2px_0_#000]">
+              Carmel Road
+            </div>
+            
+            {/* SPIDER-MAN -> TEENAGE MUTANT NINJA BORTLES */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter text-[#E3242B] text-center leading-none" 
+                style={{
+                  WebkitTextStroke: '2px #111A3A',
+                  textShadow: '1px 1px 0 #111A3A, 2px 2px 0 #111A3A, 3px 3px 0 #111A3A, 4px 4px 0 #111A3A, 5px 5px 0 #111A3A, 6px 6px 0 #111A3A, 7px 7px 0 #000, 0 15px 25px rgba(0,0,0,0.4)'
+                }}>
+              Teenage Mutant<br/>Ninja Bortles
+            </h1>
+            
+            {/* BRAND NEW DAY -> BRAND NEW DRAFT */}
+            <div className="text-[#FFD700] text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-[0.2em] mt-4" 
+                 style={{ 
+                   WebkitTextStroke: '1px #FF4500',
+                   textShadow: '2px 2px 0 rgba(0,0,0,0.8)' 
+                 }}>
+              Brand New Draft
+            </div>
+          </div>
         </div>
 
         {/* Header - Spider-Man aesthetic (Red/Blue accents) */}
