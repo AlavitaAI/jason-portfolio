@@ -311,26 +311,35 @@ export default function DraftBoard() {
           </div>
 
           {/* Center Titles */}
-          <div className="relative z-30 flex flex-col items-center max-w-[80%] mx-auto">
+          <div className="relative z-30 flex flex-col items-center mx-auto my-6 scale-50 sm:scale-75 md:scale-100 lg:scale-110 origin-center">
             {/* Marvel Studios -> Carmel Road replacement */}
-            <div className="bg-[#E3242B] text-white text-xs md:text-sm font-black uppercase tracking-[0.3em] px-3 py-1 mb-2 shadow-[2px_2px_0_#000]">
-              Carmel Road
+            <div className="bg-[#E3242B] text-white flex flex-col items-center justify-center px-6 py-1.5 mb-2">
+              <div className="border-t-2 border-b-2 border-white text-sm md:text-base font-black uppercase tracking-tight px-1" style={{ fontFamily: 'Impact, "Arial Black", sans-serif', transform: 'scaleY(1.4)' }}>
+                CARMEL ROAD
+              </div>
             </div>
             
             {/* SPIDER-MAN -> TEENAGE MUTANT NINJA BORTLES */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter text-[#E3242B] text-center leading-none" 
+            <h1 className="text-4xl md:text-5xl lg:text-7xl font-black uppercase text-[#E3242B] text-center whitespace-nowrap" 
                 style={{
-                  WebkitTextStroke: '2px #111A3A',
-                  textShadow: '1px 1px 0 #111A3A, 2px 2px 0 #111A3A, 3px 3px 0 #111A3A, 4px 4px 0 #111A3A, 5px 5px 0 #111A3A, 6px 6px 0 #111A3A, 7px 7px 0 #000, 0 15px 25px rgba(0,0,0,0.4)'
+                  fontFamily: 'Impact, "Arial Black", sans-serif',
+                  transform: 'scaleY(1.5) scaleX(0.85)',
+                  letterSpacing: '-0.02em',
+                  WebkitTextStroke: '3px #0b1a30',
+                  textShadow: '0 1px 0 #0b1a30, 0 2px 0 #0b1a30, 0 3px 0 #0b1a30, 0 4px 0 #0b1a30, 0 5px 0 #0b1a30, 0 6px 0 #0b1a30, 0 7px 0 #0b1a30, 0 8px 0 #0b1a30, 0 9px 0 #0b1a30, 0 10px 0 #0b1a30, 0 11px 0 #000, 0 20px 20px rgba(0,0,0,0.6)'
                 }}>
-              Teenage Mutant<br/>Ninja Bortles
+              TEENAGE MUTANT NINJA BORTLES
             </h1>
             
             {/* BRAND NEW DAY -> BRAND NEW DRAFT */}
-            <div className="text-[#FFD700] text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-[0.2em] mt-4" 
+            <div className="text-[#FFD700] text-2xl md:text-4xl font-black uppercase mt-12" 
                  style={{ 
-                   WebkitTextStroke: '1px #FF4500',
-                   textShadow: '2px 2px 0 rgba(0,0,0,0.8)' 
+                   fontFamily: 'Arial, sans-serif',
+                   fontWeight: 900,
+                   letterSpacing: '0.2em',
+                   WebkitTextStroke: '2px #E3242B',
+                   transform: 'scaleX(1.4) scaleY(1.1)',
+                   textShadow: 'none'
                  }}>
               Brand New Draft
             </div>
