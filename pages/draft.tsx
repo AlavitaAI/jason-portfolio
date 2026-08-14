@@ -272,11 +272,8 @@ export default function DraftBoard() {
       
       <div className="flex flex-col h-screen bg-[#f8f9fa] font-sans overflow-hidden">
         
-        {/* Huge Title with Intricate Spiderman Graphics */}
-        <div className="relative z-20 text-center py-8 shadow-2xl border-b-4 border-black overflow-hidden flex flex-col items-center justify-center bg-white" style={{ minHeight: '250px' }}>
-          
-          {/* Subtle Halftone dots for comic aesthetic in background */}
-          <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#000 2px, transparent 2px)', backgroundSize: '10px 10px' }}></div>
+        {/* Huge Title Image Banner */}
+        <div className="relative z-20 text-center shadow-2xl border-b-4 border-black overflow-hidden flex flex-col items-center justify-center bg-black" style={{ minHeight: '200px' }}>
           
           {/* Left Bortles */}
           <div className="absolute top-1/2 left-2 md:left-10 transform -translate-y-1/2 z-10 drop-shadow-xl hidden sm:block">
@@ -310,39 +307,9 @@ export default function DraftBoard() {
             </div>
           </div>
 
-          {/* Center Titles */}
-          <div className="relative z-30 flex flex-col items-center mx-auto my-6 scale-50 sm:scale-75 md:scale-100 lg:scale-110 origin-center">
-            {/* Marvel Studios -> Carmel Road replacement */}
-            <div className="bg-[#E3242B] text-white flex flex-col items-center justify-center px-6 py-1.5 mb-2">
-              <div className="border-t-2 border-b-2 border-white text-sm md:text-base font-black uppercase tracking-tight px-1" style={{ fontFamily: 'Impact, "Arial Black", sans-serif', transform: 'scaleY(1.4)' }}>
-                CARMEL ROAD
-              </div>
-            </div>
-            
-            {/* SPIDER-MAN -> TEENAGE MUTANT NINJA BORTLES */}
-            <h1 className="text-4xl md:text-5xl lg:text-7xl font-black uppercase text-[#E3242B] text-center whitespace-nowrap" 
-                style={{
-                  fontFamily: 'Impact, "Arial Black", sans-serif',
-                  transform: 'scaleY(1.5) scaleX(0.85)',
-                  letterSpacing: '-0.02em',
-                  WebkitTextStroke: '3px #0b1a30',
-                  textShadow: '0 1px 0 #0b1a30, 0 2px 0 #0b1a30, 0 3px 0 #0b1a30, 0 4px 0 #0b1a30, 0 5px 0 #0b1a30, 0 6px 0 #0b1a30, 0 7px 0 #0b1a30, 0 8px 0 #0b1a30, 0 9px 0 #0b1a30, 0 10px 0 #0b1a30, 0 11px 0 #000, 0 20px 20px rgba(0,0,0,0.6)'
-                }}>
-              TEENAGE MUTANT NINJA BORTLES
-            </h1>
-            
-            {/* BRAND NEW DAY -> BRAND NEW DRAFT */}
-            <div className="text-[#FFD700] text-2xl md:text-4xl font-black uppercase mt-12" 
-                 style={{ 
-                   fontFamily: 'Arial, sans-serif',
-                   fontWeight: 900,
-                   letterSpacing: '0.2em',
-                   WebkitTextStroke: '2px #E3242B',
-                   transform: 'scaleX(1.4) scaleY(1.1)',
-                   textShadow: 'none'
-                 }}>
-              Brand New Draft
-            </div>
+          {/* Center Image */}
+          <div className="relative z-30 flex flex-col items-center w-full max-w-4xl mx-auto py-2 md:py-6 px-16 md:px-32">
+            <img src="/header_logo.png" alt="Teenage Mutant Ninja Bortles" className="w-full h-auto object-contain drop-shadow-2xl" />
           </div>
         </div>
 
