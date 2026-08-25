@@ -337,6 +337,50 @@ const bookPosts: BookPost[] = [
       <p>Application coming soon...</p>
     `,
   },
+  {
+    slug: "city-of-thieves",
+    title: "City of Thieves",
+    author: "David Benioff",
+    date: "TBD",
+    dateRead: "TBD",
+    rating: 0,
+    cover: "/covers/city-of-thieves.jpg",
+    summary: "Template for City of Thieves.",
+    content: `
+      <h2>Summary</h2>
+      <p>Content coming soon...</p>
+
+      <h2>My Favorite Takeaways</h2>
+      <ul>
+        <li>Takeaway 1</li>
+      </ul>
+
+      <h2>Real World Application</h2>
+      <p>Application coming soon...</p>
+    `,
+  },
+  {
+    slug: "jonathan-livingston-seagull",
+    title: "Jonathan Livingston Seagull",
+    author: "Richard Bach",
+    date: "TBD",
+    dateRead: "TBD",
+    rating: 0,
+    cover: "/covers/jonathan-livingston-seagull.jpg",
+    summary: "Template for Jonathan Livingston Seagull.",
+    content: `
+      <h2>Summary</h2>
+      <p>Content coming soon...</p>
+
+      <h2>My Favorite Takeaways</h2>
+      <ul>
+        <li>Takeaway 1</li>
+      </ul>
+
+      <h2>Real World Application</h2>
+      <p>Application coming soon...</p>
+    `,
+  },
 ];
 
 export default bookPosts;
