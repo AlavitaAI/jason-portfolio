@@ -341,23 +341,14 @@ const bookPosts: BookPost[] = [
     slug: "city-of-thieves",
     title: "City of Thieves",
     author: "David Benioff",
-    date: "TBD",
-    dateRead: "TBD",
-    rating: 0,
+    date: "August 29, 2026",
+    dateRead: "August 29, 2026",
+    rating: 5,
     cover: "/covers/city-of-thieves.jpg",
-    summary: "Template for City of Thieves.",
+    summary: "One of the best books I have ever read. Maybe not in it's denseness of information or layered story, but I didn't want to stop reading this book. Funny, adventurous, and just an enjoyable story of two young men trying to survive during the Siege of Leningrad in World War II. Terrible circumstances, but two easy to root for characters. Favorite book so far this year.",
     content: `
       <h2>Summary</h2>
-      <p>Content coming soon...</p>
-
-      <h2>My Favorite Takeaways</h2>
-      <ul>
-        <li>Takeaway 1</li>
-      </ul>
-
-      <h2>Real World Application</h2>
-      <p>Application coming soon...</p>
-    `,
+      <p>Content coming soon...</p> `,
   },
   {
     slug: "jonathan-livingston-seagull",
