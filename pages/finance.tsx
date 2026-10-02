@@ -17,8 +17,10 @@ export default function Finance() {
                 href={`/finance/${post.slug}`}
                 className="flex items-baseline justify-between py-3 border-b border-gray-100 hover:bg-gray-50 -mx-3 px-3 rounded transition"
               >
-                <span className="font-medium">{post.title} <span className="text-gray-400">(${post.ticker})</span></span>
-                <span className="text-sm text-gray-400">{post.date}</span>
+                <span className="font-medium">
+                  {post.title} {post.ticker ? <span className="text-gray-400">(${post.ticker})</span> : null}
+                </span>
+                <span className="text-sm text-gray-400 ml-4 whitespace-nowrap">{post.date}</span>
               </Link>
             </li>
           ))}

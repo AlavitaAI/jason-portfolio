@@ -16,7 +16,11 @@ export default function FinancePostPage({ post }: Props) {
       <header className="mb-10">
         <h1 className="text-4xl font-bold mb-2">{post.title}</h1>
         <p className="text-gray-500">
-          ${post.ticker} · {post.date}
+          {post.author
+            ? `By ${post.author} · Read ${post.date}`
+            : post.ticker
+            ? `$${post.ticker} · ${post.date}`
+            : post.date}
         </p>
       </header>
 
